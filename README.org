@@ -63,7 +63,7 @@
   ((SLOT :ACCESSOR SLOT :INITARG :SLOT)))
 #+END_SRC
 
-   =:a=, =:i=, =:r= and =:w= are connected: when all of them is omitted, =:a= and =:i= are inserted by default.
+   =:a=, =:i=, =:r= and =:w= are connected: when all of them are omitted, =:a= and =:i= are inserted by default.
 
    =:a= stands for =:accessor=, =:i= stands for =:initarg=, =:r= stands for =:reader= and =:w= stands for =:writer=.
 
@@ -78,7 +78,14 @@
 
 ; which expands to:
 
-
+(DEFCLASS AIRW ()
+  ((SLOT1 :ACCESSOR SLOT1 :INITARG :SLOT1 :INITFORM NIL)
+   (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)
+   (SLOT3 :READER SLOT3 :INITFORM NIL)
+   (SLOT4 :READER SLOT4 :INITFORM NIL)
+   (SLOT5 :WRITER SLOT5 :INITFORM NIL)
+   (SLOT6 :ACCESSOR SLOT6 :INITFORM NIL)
+   (SLOT7 :READER SLOT7 :INITARG :SLOT7 :INITFORM NIL)))
 #+END_SRC
    Note that slot7 has an =:ri= option. That's just =:r= and =:i= together.
 
