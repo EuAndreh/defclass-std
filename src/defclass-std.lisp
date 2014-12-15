@@ -3,7 +3,8 @@
   (:import-from anaphora
                 aif
                 it)
-  (:export defclass/std)
+  (:export defclass/std
+           *default-std*)
   (:documentation "Main project package."))
 (in-package defclass-std)
 
@@ -17,9 +18,12 @@
       (cons (car line)
             (extract-slot-names (cdr line)))))
 
-(defvar *options* '(:a :r :w :i :static :com :com-prefixo :@@
-                    :std :doc :type :col-type)
+(defvar *options* '(:a :r :w :i :static :with :with-prefix :@@ :static
+                    :std :doc :type)
   "All available keyword options.")
+
+(defvar *default-std* t
+  "Special var that changes the behaviour of the DEFCLASS/STD macro. If true, adds a :initform nil by default to every field, when unespecified. If false, adds nothing.")
 
 (defun find-fusioned-keyword-options (line)
   "Should return a singleton list with the only fusioned element. Throws an error otherwise."
@@ -45,7 +49,7 @@
                         (qtl:explode (symbol-name fusioned-keywords)))))))
 
 (defun check-for-repeated-keywords (line)
-  "Verifies if keyword options were repeated. Mainly useful for avoiding things like (:a :ai) together, or (:r :w) instead of (:a)."
+  "Verifies if keyword options were repeated. Mainly useful for avoiding things like (`:a' `:ai') together, or (`:r' `:w') instead of (`:a')."
   (cond ((and (member :w line)
               (member :r line))
          (error
@@ -75,17 +79,20 @@
                              (list :writer (qtl:symbolicate prefix slot)))
                          (if (member :i line)
                              (list :initarg (qtl:make-keyword slot)))
-                         (list :initform (aif (member :std line)
-                                              (cadr it)))
+
+                         (aif (member :std line)
+                              (if (eq (cadr it) :unbound)
+                                  nil
+                                  (list :initform (cadr it)))
+                              (if *default-std*
+                                  (list :initform nil)))
                          (if (or (member :@@ line)
                                  (member :static line))
                              (list :allocation :class))
                          (aif (member :doc line)
                               (list :documentation (cadr it)))
                          (aif (member :type line)
-                              (list :type  (cadr it)))
-                         (aif (member :col-type line)
-                              (list :col-type (cadr it)))))
+                              (list :type  (cadr it)))))
           (extract-slot-names line)))
 
 (defmacro defclass/std (name direct-superclasses direct-slots &rest options)
@@ -96,10 +103,9 @@
               (lambda (line)
                 (let ((prefix (if (or (member :with-prefix line)
                                       (member :with line))
-                                  (concatenate 'string name "-")
+                                  (concatenate 'string (string name) "-")
                                   ""))
                       (split-kws-line (split-fusioned-keyword line)))
-                  (print split-kws-line)
                   (check-for-repeated-keywords split-kws-line)
                   (replace-keywords split-kws-line prefix)))
               direct-slots))
