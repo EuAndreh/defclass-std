@@ -203,9 +203,7 @@ $ sbcl --noinform --load t/defclass-std.lisp --eval '(sb-ext:exit)'
 #+END_SRC
    Or to run from the REPL:
 #+BEGIN_SRC lisp
-  * (progn
-      (ql:quickload :defclass-std)
-      (asdf:test-system :defclass-std))
+  * (asdf:test-system :defclass-std)
   ; prints lots of stuff...
   ; => T
 #+END_SRC
