@@ -1,18 +1,12 @@
-#|
-  This file is a part of defclass-std project.
-  Copyright (c) 2014 André Miranda
-|#
-
-(in-package :cl-user)
 (defpackage defclass-std-test-asd
-  (:use :cl :asdf))
-(in-package :defclass-std-test-asd)
+  (:use cl asdf))
+(in-package defclass-std-test-asd)
 
 (defsystem defclass-std-test
   :author "André Miranda"
   :license "LLGPL"
-  :depends-on (:defclass-std
-               :prove)
+  :depends-on (defclass-std
+               prove)
   :components ((:module "t"
                 :components
                 ((:test-file "defclass-std"))))

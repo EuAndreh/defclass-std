@@ -1,10 +1,136 @@
-* Defclass-Std  - 
+* defclass-std
+  Most times, when sketching out a new class, I often commit lots of typos and forget to add an =:initform=.
 
+  Also, the throw away model designed in the beginning may thrive and stays the same. If only there was a way to overcome these problems... There is!
+
+  This simple macro atempts to give a very DRY and succint interface to the common =DEFCLASS= form. The goal is to offer all capabilities of a normal =DEFCLASS=, only in a more compact way.
+
+  Everything compiles down to =DEFCLASS=.
 ** Usage
+#+BEGIN_SRC lisp
+  * (progn
+      (ql:quickload :defclass-std)
+      (defpackage defclass-std-user
+        (:use cl defclass-std))
+      (in-package defclass-std-user))
+  ; => T
+#+END_SRC
 
+Macro para definir classe de forma curta. O alvo é atingir todas as capacidades do DEFCLASS padrão.
+   Existem apelidos para todos os tipos de opções dos slots do DEFCLASS padrão:
+
+      :w -> adiciona :writer nome-do-writer
+      :r -> adiciona :reader nome-do-reader
+      :a -> adiciona :accessor nome-do-accessor
+      :static ou :@@ -> adiciona :allocation :class
+      :i -> adiciona :initarg nome-do-initarg
+      :std XXX -> adiciona :initform XXX
+      :type XXX -> idêntico ao padrão
+      :doc XXX -> adiciona :documentation XXX
+
+   Outros:
+      Se a opção :sem-prefixo não estiver presente, as funções #'nome-do-writer, #'nome-do-reader, #'nome-do-accessor e #'nome-do-initarg são criadas no seguinte modelo: <nome-da-classe>-<nome-do-slot>; se a opção :sem-prefixo estiver presente, as mesmas funções são criadas com seu nome idêntico ao nome do slot.
+
+
+   Example:
+#+BEGIN_SRC lisp
+(defclass/std computer (gadget)
+  ((screen mouse keyboard :a :type string :with-prefix)
+   (bluetooth touchpad :wi)
+   (speaker microphone :r)
+   (place :@@ :with :doc "Where it is" :r)
+   (owner :static :std "Me" :w)))
+
+  ; expands to:
+
+(DEFCLASS COMPUTER (GADGET)
+  ((SCREEN :ACCESSOR COMPUTER-SCREEN :INITFORM NIL :TYPE STRING)
+   (MOUSE :ACCESSOR COMPUTER-MOUSE :INITFORM NIL :TYPE STRING)
+   (KEYBOARD :ACCESSOR COMPUTER-KEYBOARD :INITFORM NIL :TYPE STRING)
+   (BLUETOOTH :WRITER BLUETOOTH :INITARG :BLUETOOTH :INITFORM NIL)
+   (TOUCHPAD :WRITER TOUCHPAD :INITARG :TOUCHPAD :INITFORM NIL)
+   (SPEAKER :READER SPEAKER :INITFORM NIL)
+   (MICROPHONE :READER MICROPHONE :INITFORM NIL)
+   (PLACE :READER COMPUTER-PLACE :INITFORM NIL :ALLOCATION :CLASS
+          :DOCUMENTATION "Where it is")
+   (OWNER :WRITER OWNER :INITFORM "Me" :ALLOCATION :CLASS)))
+#+END_SRC
+
+   Real life examples:
+   From [[https://github.com/AccelerationNet/cl-inflector/blob/master/langs.lisp][cl-inflector]]:
+#+BEGIN_SRC lisp
+(defclass language ()
+  ((name :accessor name :initarg :name :initform nil)
+   (plurals :accessor plurals :initarg :plurals :initform nil)
+   (singulars :accessor singulars :initarg :singulars :initform nil)
+   (uncountables :accessor uncountables :initarg :uncountables :initform nil)
+   (irregulars :accessor irregulars :initarg :irregulars :initform nil)))
+
+; could be written
+
+(defclass/std language ()
+  ((name plurals singulars uncountables irregulars)))
+#+END_SRC
+   From [[https://github.com/fukamachi/clack/blob/9804d0b57350032ebdcf8539bae376b5528ac1f6/src/core/handler.lisp][clack]]:
+#+BEGIN_SRC lisp
+(defclass <handler> ()
+     ((server-name :type keyword
+                   :initarg :server-name
+                   :accessor server-name)
+      (acceptor :initarg :acceptor
+                :accessor acceptor)))
+
+; could be written (with *default-std* set to nil)
+(defclass/std language ()
+  ((server-name :type keyword)
+   (acceptor)))
+#+END_SRC
+   From [[https://github.com/archimag/restas/blob/3e37f868141c785d2468fab342d57cca2e2a40dd/src/route.lisp][RESTAS]]:
+#+BEGIN_SRC lisp
+(defclass route (routes:route)
+  ((symbol :initarg :symbol :reader route-symbol)
+   (module :initarg :module :initform nil :reader route-module)
+   (required-method :initarg :required-method :initform nil
+                    :reader route-required-method)
+   (arbitrary-requirement :initarg :arbitrary-requirement :initform nil
+                          :reader route-arbitrary-requirement)
+   (render-method :initarg :render-method :initform #'identity)
+   (headers :initarg :headers :initform nil :reader route-headers)
+   (variables :initarg :variables :initform nil)
+   (additional-variables :initarg :additional-variables :initform nil)))
+
+; could be written
+(defclass/std route (routes-route)
+  ((symbol :ri :with-prefix :std :unbound)
+   (module required-method arbitrary-requirement
+           headers variables additional-variables :ri)
+   (render-method :i :std #'identity)
+   (header :ir)))
+#+END_SRC
 ** Dependencies
+   This project depends on the [[quickutil.org][Quickutil]] (awesome) library and on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
 
 ** Installation
+   1. =cd= to your [[quicklisp.org][Quicklisp]] =local-projects= folder.
+   2. Clone the repo =git clone https://github.com/EuAndreh/defclass-std=.
+   3. Load it with Quicklisp: =(ql:quickload :defclass-std)=
+
+** Bugs
+   If you find any bug or inconsistency in the code, or if you find it too hard to use, feel free to open an issue.
+
+** Tests
+   To run all the defined tests, use:
+#+BEGIN_SRC
+$ sbcl --noinform --load t/defclass-std.lisp --eval '(sb-ext:exit)'
+#+END_SRC
+   Or to run from the REPL:
+#+BEGIN_SRC lisp
+  * (progn
+      (ql:quickload :defclass-std)
+      (asdf:test-system :defclass-std))
+  ; prints lots of stuff...
+  ; => T
+#+END_SRC
 
 ** Author
 
