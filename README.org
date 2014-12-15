@@ -1,7 +1,7 @@
 * defclass-std
   Most times, when sketching out a new class, I often commit lots of typos and forget to add an =:initform=.
 
-  Also, the throw away model designed in the beginning may thrive and stays the same. If only there was a way to overcome these problems... There is!
+  Also, the throw away class designed in the beginning may thrive and stays the same. If only there was a way to overcome these problems... There is!
 
   This simple macro atempts to give a very DRY and succint interface to the common =DEFCLASS= form. The goal is to offer all capabilities of a normal =DEFCLASS=, only in a more compact way.
 
@@ -19,20 +19,93 @@
 Macro para definir classe de forma curta. O alvo é atingir todas as capacidades do DEFCLASS padrão.
    Existem apelidos para todos os tipos de opções dos slots do DEFCLASS padrão:
 
-      :w -> adiciona :writer nome-do-writer
-      :r -> adiciona :reader nome-do-reader
-      :a -> adiciona :accessor nome-do-accessor
-      :static ou :@@ -> adiciona :allocation :class
-      :i -> adiciona :initarg nome-do-initarg
-      :std XXX -> adiciona :initform XXX
-      :type XXX -> idêntico ao padrão
-      :doc XXX -> adiciona :documentation XXX
+   A simple class defined with =DEFCLASS/STD= looks like this:
+#+BEGIN_SRC
+(defclass/std example ()
+  ((slot1 slot2 slot3)))
 
-   Outros:
-      Se a opção :sem-prefixo não estiver presente, as funções #'nome-do-writer, #'nome-do-reader, #'nome-do-accessor e #'nome-do-initarg são criadas no seguinte modelo: <nome-da-classe>-<nome-do-slot>; se a opção :sem-prefixo estiver presente, as mesmas funções são criadas com seu nome idêntico ao nome do slot.
+; which expands to:
+
+(DEFCLASS EXAMPLE NIL
+  ((SLOT1 :ACCESSOR SLOT1 :INITARG :SLOT1 :INITFORM NIL)
+   (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)
+   (SLOT3 :ACCESSOR SLOT3 :INITARG :SLOT3 :INITFORM NIL)))
+#+END_SRC
+   As you can see, by default, the macro adds three options:
+   1. =:accessor= + the name of the slot
+   2. =:initarg= + the name of the slot
+   3. =:initform nil=
+
+   If you want to change the =:initform= value, you can use the =:std= option:
+#+BEGIN_SRC lisp
+(defclass std-test ()
+  ((slot :std 1)))
+
+; expands to:
+
+(DEFCLASS STD-TEST ()
+  ((SLOT :ACCESSOR SLOT :INITARG :SLOT :INITFORM 1)))
+#+END_SRC
+
+   If you want to omit the =:initform= option, you have two ways:
+   1. Use =:std :unbound= explicitly
+   2. Change the value of =*default-std*=. By default it is set to =T=, so, when the =:std= option is omitted, =:initform= is set to nil. When =*default-std*= is set to nil, =:initform= is omitted when =:std= is omitted.
+#+BEGIN_SRC lisp
+(defclass/std omit-std ()
+  ((slot :std :unbound)))
+
+; which is equivalent to:
+
+(setf *default-std* nil)
+(defclass/std omit-std ()
+  ((slot)))
+
+; which (both) expands to:
+
+(DEFCLASS OMIT-STD ()
+  ((SLOT :ACCESSOR SLOT :INITARG :SLOT)))
+#+END_SRC
+
+   =:a=, =:i=, =:r= and =:w= are connected: when all of them is omitted, =:a= and =:i= are inserted by default.
+
+   =:a= stands for =:accessor=, =:i= stands for =:initarg=, =:r= stands for =:reader= and =:w= stands for =:writer=.
+
+   If any of those is present, the default (=:a= and =:i=) is omitted.
+#+BEGIN_SRC lisp
+(defclass/std airw ()
+  ((slot1 slot2)
+   (slot3 slot4 :r)
+   (slot5 :w)
+   (slot6 :a)
+   (slot7 :ri)))
+
+; which expands to:
 
 
-   Example:
+#+END_SRC
+   Note that slot7 has an =:ri= option. That's just =:r= and =:i= together.
+
+   If you want to use =:r= and =:w= together, use =:a= instead, or you'll get an error. The same stands for =:a= + =:r= and =:a= + =:w=.
+
+   You can choose to add the class name as a prefix for the acessor/reader/writer function. Just put =:with= or =:with-prefix= option.
+
+#+BEGIN_SRC lisp
+(defclass/std example ()
+  ((slot1 :with)
+   (slot2)))
+
+; which expands to:
+
+(DEFCLASS WITH ()
+  ((SLOT1 :ACCESSOR EXAMPLE-SLOT1 :INITARG :SLOT1 :INITFORM NIL)
+   (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)))
+#+END_SRC
+
+   To make a slot static (class-allocated), use =:@@= or =:static=.
+
+   To declare the type of a slot or to add documentation to a slot, use =:type= and =:doc=, respectively.
+
+** Examples:
 #+BEGIN_SRC lisp
 (defclass/std computer (gadget)
   ((screen mouse keyboard :a :type string :with-prefix)
