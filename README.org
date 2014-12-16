@@ -160,10 +160,14 @@
    (uncountables :accessor uncountables :initarg :uncountables :initform nil)
    (irregulars :accessor irregulars :initarg :irregulars :initform nil)))
 
-; could be written
+; could be written:
 
 (defclass/std language ()
   ((name plurals singulars uncountables irregulars)))
+
+; or, using CLASS/STD:
+
+(class/std language name plurals singulars uncountables irregulars)
 #+END_SRC
    From [[https://github.com/fukamachi/clack/blob/9804d0b57350032ebdcf8539bae376b5528ac1f6/src/core/handler.lisp][clack]]:
 #+BEGIN_SRC lisp
