@@ -109,6 +109,23 @@
 
    To declare the type of a slot or to add documentation to a slot, use =:type= and =:doc=, respectively.
 
+   For real quick, concise, dense and standard class definitions, use =CLASS/STD=:
+#+BEGIN_SRC lisp
+(class/std example slot1 slot2 slot3)
+
+; which expands to:
+
+(DEFCLASS/STD EXAMPLE ()
+  ((SLOT1 SLOT2 SLOT3)))
+
+
+; which expands to:
+
+(DEFCLASS EXAMPLE ()
+  ((SLOT1 :ACCESSOR SLOT1 :INITARG :SLOT1 :INITFORM NIL)
+   (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)
+   (SLOT3 :ACCESSOR SLOT3 :INITARG :SLOT3 :INITFORM NIL)))
+#+END_SRC
 ** Examples:
 #+BEGIN_SRC lisp
 (defclass/std computer (gadget)

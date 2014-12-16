@@ -4,7 +4,8 @@
                 aif
                 it)
   (:export defclass/std
-           *default-std*)
+           *default-std*
+           class/std)
   (:documentation "Main project package."))
 (in-package defclass-std)
 
@@ -110,3 +111,7 @@
                   (replace-keywords split-kws-line prefix)))
               direct-slots))
      ,@options))
+
+(defmacro class/std (name &body defaulted-slots)
+  `(defclass/std ,name ()
+     ((,@defaulted-slots))))
