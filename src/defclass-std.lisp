@@ -38,7 +38,7 @@
                nil
                :ai)) ;; defaults to `:ai'.
           ((= 1 (length singleton-list)) (car singleton-list))
-          (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s"
+          (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
                singleton-list)))))
 
 (defun split-fusioned-keyword (line)
