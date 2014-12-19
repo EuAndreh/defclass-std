@@ -217,10 +217,6 @@
    If you find any bug or inconsistency in the code, or if you find it too hard to use, feel free to open an issue.
 
 ** Tests
-   To run all the defined tests, use:
-#+BEGIN_SRC
-$ sbcl --noinform --load t/defclass-std.lisp --eval '(sb-ext:exit)'
-#+END_SRC
    Or to run from the REPL:
 #+BEGIN_SRC lisp
   * (asdf:test-system :defclass-std)
