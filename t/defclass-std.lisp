@@ -4,7 +4,24 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :defclass-std)' in your Lisp.
 
-(plan 1)
+(plan 3)
+
+(deftest class/std-expansion
+  (is-expand (class/std stub slot1 slot2 slot3 slot4 slot5)
+             (DEFCLASS/STD STUB ()
+               ((SLOT1 SLOT2 SLOT3 SLOT4 SLOT5)))
+             "CLASS/STD expands correctly."))
+
+(deftest default-accessor-initarg
+  (is-expand (DEFCLASS/STD STUB ()
+               ((SLOT1 SLOT2 SLOT3 SLOT4 SLOT5)))
+             (DEFCLASS STUB ()
+               ((SLOT1 :ACCESSOR SLOT1 :INITARG :SLOT1 :INITFORM NIL)
+                (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)
+                (SLOT3 :ACCESSOR SLOT3 :INITARG :SLOT3 :INITFORM NIL)
+                (SLOT4 :ACCESSOR SLOT4 :INITARG :SLOT4 :INITFORM NIL)
+                (SLOT5 :ACCESSOR SLOT5 :INITARG :SLOT5 :INITFORM NIL)))
+             "Defaults omitted args (:ai) works correctly."))
 
 (deftest test-all-keyword-option
   (is-expand (defclass/std computer (gadget)
