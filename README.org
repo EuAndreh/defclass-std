@@ -125,6 +125,19 @@
    (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)
    (SLOT3 :ACCESSOR SLOT3 :INITARG :SLOT3 :INITFORM NIL)))
 #+END_SRC
+
+   You can also add the prefix by default by changing the value of the =*with-prefix*= special variable (defaults to =nil=):
+#+BEGIN_SRC lisp
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (setf *with-prefix* t))
+(defclass/std pre ()
+  ((fix)))
+
+; which expands to:
+
+(DEFCLASS PRE ()
+  ((FIX :ACCESSOR PRE-FIX :INITARG :FIX)))
+#+END_SRC
 ** Examples:
 #+BEGIN_SRC lisp
 (defclass/std computer (gadget)
@@ -302,7 +315,7 @@
 
 ; could be written:
 (eval-when (:compile-toplevel :load-toplevel :execute)
-  (setf defclass-std:*default-std* nil))
+  (setf *default-std* nil))
 (defclass/std light ()
   ((bridge number type name modelid uniqueid swversion pointsymbol on brightness
            hue saturation xy ct alert effect colormode reachable

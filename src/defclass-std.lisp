@@ -5,6 +5,7 @@
                 it)
   (:export defclass/std
            *default-std*
+           *with-prefix*
            class/std)
   (:documentation "Main project package."))
 (in-package defclass-std)
@@ -25,6 +26,9 @@
 
 (defvar *default-std* t
   "Special var that changes the behaviour of the DEFCLASS/STD macro. If true, adds a :initform nil by default to every field, when unespecified. If false, adds nothing.")
+
+(defvar *with-prefix* nil
+  "Special var that changes the behaviour of the DEFCLASS/STD macro. If tru, adds the class name as a prefix to every accessor/reader/writer function. If false, without the :with slot option, adds nothing.")
 
 (defun find-fusioned-keyword-options (line)
   "Should return a singleton list with the only fusioned element. Throws an error otherwise."
@@ -102,7 +106,8 @@
              (mapcar
               (lambda (line)
                 (let ((prefix (if (or (member :with-prefix line)
-                                      (member :with line))
+                                      (member :with line)
+                                      *with-prefix*)
                                   (concatenate 'string (string name) "-")
                                   ""))
                       (split-kws-line (split-fusioned-keyword line)))
