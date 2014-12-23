@@ -20,7 +20,7 @@
             (extract-slot-names (cdr line)))))
 
 (defvar *options* '(:a :r :w :i :static :with :with-prefix :@@ :static
-                    :std :doc :type)
+                    :std :unbound :doc :type)
   "All available keyword options.")
 
 (defvar *default-std* t
@@ -80,7 +80,6 @@
                              (list :writer (qtl:symbolicate prefix slot)))
                          (if (member :i line)
                              (list :initarg (qtl:make-keyword slot)))
-
                          (aif (member :std line)
                               (if (eq (cadr it) :unbound)
                                   nil
