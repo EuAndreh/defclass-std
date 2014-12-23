@@ -25,10 +25,10 @@
 
 (deftest test-all-keyword-option
   (is-expand (defclass/std computer (gadget)
-               ((screen mouse keyboard :a :type string :with-prefix)
+               ((screen mouse keyboard :a :type string :with)
                 (bluetooth touchpad :wi :std :unbound)
                 (speaker microphone :r)
-                (place :@@ :with :doc "Where it is" :r)
+                (place :@@ :with-prefix :doc "Where it is" :r)
                 (owner :static :std "Me" :w)))
              (DEFCLASS COMPUTER (GADGET)
                ((SCREEN :ACCESSOR COMPUTER-SCREEN :INITFORM NIL :TYPE STRING)
