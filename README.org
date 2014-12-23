@@ -265,7 +265,7 @@
 
 ;; And the equivalent defclass/std version (46 tree leaves):
 (defclass/std configuration ()
-  ((package-name :type symbol)
+  ((package-name :type symbol :std :unbound)
    (package-nicknames included-files hidden-symbols output-filename)
    (gccxml-path :std "gccxml")
    (gccxml-flags :std "")
