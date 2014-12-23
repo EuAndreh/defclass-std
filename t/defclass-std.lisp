@@ -26,7 +26,7 @@
 (deftest test-all-keyword-option
   (is-expand (defclass/std computer (gadget)
                ((screen mouse keyboard :a :type string :with-prefix)
-                (bluetooth touchpad :wi)
+                (bluetooth touchpad :wi :std :unbound)
                 (speaker microphone :r)
                 (place :@@ :with :doc "Where it is" :r)
                 (owner :static :std "Me" :w)))
@@ -34,8 +34,8 @@
                ((SCREEN :ACCESSOR COMPUTER-SCREEN :INITFORM NIL :TYPE STRING)
                 (MOUSE :ACCESSOR COMPUTER-MOUSE :INITFORM NIL :TYPE STRING)
                 (KEYBOARD :ACCESSOR COMPUTER-KEYBOARD :INITFORM NIL :TYPE STRING)
-                (BLUETOOTH :WRITER BLUETOOTH :INITARG :BLUETOOTH :INITFORM NIL)
-                (TOUCHPAD :WRITER TOUCHPAD :INITARG :TOUCHPAD :INITFORM NIL)
+                (BLUETOOTH :WRITER BLUETOOTH :INITARG :BLUETOOTH)
+                (TOUCHPAD :WRITER TOUCHPAD :INITARG :TOUCHPAD)
                 (SPEAKER :READER SPEAKER :INITFORM NIL)
                 (MICROPHONE :READER MICROPHONE :INITFORM NIL)
                 (PLACE :READER COMPUTER-PLACE :INITFORM NIL :ALLOCATION :CLASS
