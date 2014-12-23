@@ -28,7 +28,7 @@
   "Special var that changes the behaviour of the DEFCLASS/STD macro. If true, adds a :initform nil by default to every field, when unespecified. If false, adds nothing.")
 
 (defvar *with-prefix* nil
-  "Special var that changes the behaviour of the DEFCLASS/STD macro. If tru, adds the class name as a prefix to every accessor/reader/writer function. If false, without the :with slot option, adds nothing.")
+  "Special var that changes the behaviour of the DEFCLASS/STD macro. If tru, adds the class name as a prefix to every accessor/reader/writer function. If false, without the :with/:with-prefix slot option, adds nothing.")
 
 (defun find-fusioned-keyword-options (line)
   "Should return a singleton list with the only fusioned element. Throws an error otherwise."
@@ -40,7 +40,7 @@
                    (member :w line)
                    (member :i line))
                nil
-               :ai)) ;; defaults to `:ai'.
+               :ai)) ;; defaults to `:ai'
           ((= 1 (length singleton-list)) (car singleton-list))
           (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
                singleton-list)))))
