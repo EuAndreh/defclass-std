@@ -52,8 +52,8 @@
   ((slot :std :unbound)))
 
 ; which is equivalent to:
-
-(setf *default-std* nil)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (setf *default-std* nil))
 (defclass/std omit-std ()
   ((slot)))
 
@@ -277,6 +277,36 @@
                               :type (or (function (string)) symbol))
    (temp-directory :std (make-pathname :directory "/tmp"))
    (working-directory :std *default-pathname-defaults*)))
+#+END_SRC
+   From [[https://github.com/jd/cl-hue/blob/master/cl-hue.lisp][cl-hue]]:
+#+BEGIN_SRC lisp
+(defclass light ()
+  ((bridge :initarg :bridge :accessor light-bridge)
+   (number :initarg :number :accessor light-number)
+   (type :initarg :type :accessor light-type)
+   (name :initarg :name :accessor light-name)
+   (modelid :initarg :modelid :accessor light-modelid)
+   (uniqueid :initarg :uniqueid :accessor light-uniqueid)
+   (swversion :initarg :swversion :accessor light-swversion)
+   (pointsymbol :initarg :pointsymbol :accessor light-pointsymbol)
+   (on :initarg :on :accessor light-on-p)
+   (brightness :initarg :brightness :accessor light-brightness)
+   (hue :initarg :hue :accessor light-hue)
+   (saturation :initarg :saturation :accessor light-saturation)
+   (xy :initarg :xy :accessor light-xy)
+   (ct :initarg :ct :accessor light-ct)
+   (alert :initarg :alert :accessor light-alert)
+   (effect :initarg :effect :accessor light-effect)
+   (colormode :initarg :colormode :accessor light-colormode)
+   (reachable :initarg :reachable :accessor light-reachable-p)))
+
+; could be written:
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (setf defclass-std:*default-std* nil))
+(defclass/std light ()
+  ((bridge number type name modelid uniqueid swversion pointsymbol on brightness
+           hue saturation xy ct alert effect colormode reachable
+           :with)))
 #+END_SRC
 ** Dependencies
    This project depends on the (awesome) [[http://quickutil.org][Quickutil]] library and on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
