@@ -52,8 +52,8 @@
   ((slot :std :unbound)))
 
 ; which is equivalent to:
-
-(setf *default-std* nil)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (setf *default-std* nil))
 (defclass/std omit-std ()
   ((slot)))
 
@@ -124,6 +124,19 @@
   ((SLOT1 :ACCESSOR SLOT1 :INITARG :SLOT1 :INITFORM NIL)
    (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)
    (SLOT3 :ACCESSOR SLOT3 :INITARG :SLOT3 :INITFORM NIL)))
+#+END_SRC
+
+   You can also add the prefix by default by changing the value of the =*with-prefix*= special variable (defaults to =nil=):
+#+BEGIN_SRC lisp
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (setf *with-prefix* t))
+(defclass/std pre ()
+  ((fix)))
+
+; which expands to:
+
+(DEFCLASS PRE ()
+  ((FIX :ACCESSOR PRE-FIX :INITARG :FIX)))
 #+END_SRC
 ** Examples:
 #+BEGIN_SRC lisp
@@ -204,6 +217,113 @@
            headers variables additional-variables :ri)
    (render-method :i :std #'identity)
    (header :ir)))
+#+END_SRC
+   From [[http://common-lisp.net/project/defclass-star/configuration.lisp.html][defclass-star example]]:
+#+BEGIN_SRC lisp
+(defclass configuration ()
+  ((package-name      :type symbol  :initarg :package-name      :accessor package-name-of)
+   (package-nicknames :initform '() :initarg :package-nicknames :accessor package-nicknames-of)
+   (included-files    :initform '() :initarg :included-files    :accessor included-files-of)
+   (gccxml-path       :initform "gccxml" :initarg :gccxml-path  :accessor gccxml-path-of)
+   (gccxml-flags      :initform ""  :initarg :gccxml-flags      :accessor gccxml-flags-of)
+   (hidden-symbols    :initform '() :initarg :hidden-symbols    :accessor hidden-symbols-of)
+   (output-filename   :initform nil :initarg :output-filename   :accessor output-filename-of)
+   (options           :initform (standard-configuration-options)
+                      :initarg :options
+                      :accessor options-of)
+   (symbol-export-filter :initform 'standard-symbol-export-filter
+                         :type (or (function (symbol)) symbol)
+                         :initarg :symbol-export-filter
+                         :accessor symbol-export-filter-of)
+   (function-name-transformer :initform 'standard-name-transformer
+                              :type (or (function (string)) symbol)
+                              :initarg :function-name-transformer
+                              :accessor function-name-transformer-of)
+   (variable-name-transformer :initform 'standard-name-transformer
+                              :type (or (function (string)) symbol)
+                              :initarg :variable-name-transformer
+                              :accessor variable-name-transformer-of)
+   (type-name-transformer :initform 'standard-name-transformer
+                          :type (or (function (string)) symbol)
+                          :initarg :type-name-transformer
+                          :accessor type-name-transformer-of)
+   (temp-directory    :initform (make-pathname :directory "/tmp")
+                      :initarg :temp-directory
+                      :accessor temp-directory-of)
+   (working-directory :initform *default-pathname-defaults*
+                      :initarg :working-directory
+                      :accessor working-directory-of)))
+
+;;; And the equivalent defclass* version (56 tree leaves):
+(defclass* configuration ()
+  ((package-name
+                              :type symbol)
+   (package-nicknames         '())
+   (included-files            '())
+   (gccxml-path               "gccxml")
+   (gccxml-flags              "")
+   (hidden-symbols            '())
+   (output-filename           nil)
+   (options                   (standard-configuration-options))
+   (symbol-export-filter      'standard-symbol-export-filter
+                              :type (or (function (symbol)) symbol))
+   (function-name-transformer 'standard-name-transformer
+                              :type (or (function (string)) symbol))
+   (variable-name-transformer 'standard-name-transformer
+                              :type (or (function (string)) symbol))
+   (type-name-transformer     'standard-name-transformer
+                              :type (or (function (string)) symbol))
+   (temp-directory            (make-pathname :directory "/tmp"))
+   (working-directory         *default-pathname-defaults*)))
+
+;; And the equivalent defclass/std version (46 tree leaves):
+(defclass/std configuration ()
+  ((package-name :type symbol :std :unbound)
+   (package-nicknames included-files hidden-symbols output-filename)
+   (gccxml-path :std "gccxml")
+   (gccxml-flags :std "")
+   (options :std (standard-configuration-options))
+   (symbol-export-filter :std 'standard-symbol-export-filter
+                         :type (or (function (symbol)) symbol))
+   (function-name-transformer variable-name-transformer type-name-transformer
+                              :std 'standard-name-transformer
+                              :type (or (function (string)) symbol))
+   (temp-directory :std (make-pathname :directory "/tmp"))
+   (working-directory :std *default-pathname-defaults*)))
+#+END_SRC
+   From [[https://github.com/jd/cl-hue/blob/master/cl-hue.lisp][cl-hue]]:
+#+BEGIN_SRC lisp
+(defclass light ()
+  ((bridge :initarg :bridge :accessor light-bridge)
+   (number :initarg :number :accessor light-number)
+   (type :initarg :type :accessor light-type)
+   (name :initarg :name :accessor light-name)
+   (modelid :initarg :modelid :accessor light-modelid)
+   (uniqueid :initarg :uniqueid :accessor light-uniqueid)
+   (swversion :initarg :swversion :accessor light-swversion)
+   (pointsymbol :initarg :pointsymbol :accessor light-pointsymbol)
+   (on :initarg :on :accessor light-on-p)
+   (brightness :initarg :brightness :accessor light-brightness)
+   (hue :initarg :hue :accessor light-hue)
+   (saturation :initarg :saturation :accessor light-saturation)
+   (xy :initarg :xy :accessor light-xy)
+   (ct :initarg :ct :accessor light-ct)
+   (alert :initarg :alert :accessor light-alert)
+   (effect :initarg :effect :accessor light-effect)
+   (colormode :initarg :colormode :accessor light-colormode)
+   (reachable :initarg :reachable :accessor light-reachable-p)))
+
+; could be written:
+(defclass/std light ()
+  ((bridge number type name modelid uniqueid swversion pointsymbol on brightness
+           hue saturation xy ct alert effect colormode reachable
+           :with :std :unbound)))
+
+; or, with *default-std* set to nil and *with-prefix* set to t:
+
+(class/std light
+  bridge number type name modelid uniqueid swversion pointsymbol on brightness
+  hue saturation xy ct alert effect colormode reachable)
 #+END_SRC
 ** Dependencies
    This project depends on the (awesome) [[http://quickutil.org][Quickutil]] library and on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
