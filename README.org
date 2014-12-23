@@ -314,12 +314,16 @@
    (reachable :initarg :reachable :accessor light-reachable-p)))
 
 ; could be written:
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (setf *default-std* nil))
 (defclass/std light ()
   ((bridge number type name modelid uniqueid swversion pointsymbol on brightness
            hue saturation xy ct alert effect colormode reachable
-           :with)))
+           :with :std :unbound)))
+
+; or, with *default-std* set to nil and *with-prefix* set to t:
+
+(class/std light
+  bridge number type name modelid uniqueid swversion pointsymbol on brightness
+  hue saturation xy ct alert effect colormode reachable)
 #+END_SRC
 ** Dependencies
    This project depends on the (awesome) [[http://quickutil.org][Quickutil]] library and on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
