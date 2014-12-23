@@ -317,7 +317,7 @@
 (defclass/std light ()
   ((bridge number type name modelid uniqueid swversion pointsymbol on brightness
            hue saturation xy ct alert effect colormode reachable
-           :with :std :unbound)))
+           :with-prefix :std :unbound)))
 
 ; or, with *default-std* set to nil and *with-prefix* set to t:
 
