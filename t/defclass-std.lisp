@@ -5,7 +5,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :defclass-std)' in your Lisp.
 
-(plan 5)
+(plan 6)
 
 (deftest class/std->defclass/std->defclass-expansion-test
   (is-expand (class/std stub slot1 slot2 slot3 slot4 slot5)
@@ -96,13 +96,12 @@
                                   :INITFORM NIL)))
                "When bound to T, *WITH-PREFIX* changes the behaviour of DEFCLASS/STD, add the class name as a prefix to the accessor.")))
 
-#+nil
-(deftest test-ignore-unknown-keywords
+"(deftest test-ignore-unknown-keywords
   (is-expand (defclass/std unknown ()
                ((slot :unknown :keywords)))
              (DEFCLASS UNKNOWN
                  ((SLOT :ACCESSOR SLOT :INITARG :SLOT :INITFORM NIL
                         :UNKNOWN :KEYWORDS)))
-             "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
+             \"DEFCLASS/STD with unknown keywords works as expected, keeping them as they are.\"))"
 
 (run-test-all)
