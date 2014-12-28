@@ -5,7 +5,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :defclass-std)' in your Lisp.
 
-(setf prove:*debug-mode-on* t)
+(setf prove:*debug-on-error* t)
 
 (plan 7)
 
