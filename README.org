@@ -326,7 +326,7 @@
   hue saturation xy ct alert effect colormode reachable)
 #+END_SRC
 ** Dependencies
-   This project depends on the (awesome) [[http://quickutil.org][Quickutil]] library and on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
+   This project depends only on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
 
 ** Installation
    1. =cd= to your [[quicklisp.org][Quicklisp]] =local-projects= folder.
@@ -343,6 +343,7 @@
   ; prints lots of stuff...
   ; => T
 #+END_SRC
+   Tests are also ran with [[https://travis-ci.org/EuAndreh/defclass-std][Travis CI]] using [[https://github.com/luismbo/cl-travis][cl-travis]]. Check it out!
 
 ** Author
 

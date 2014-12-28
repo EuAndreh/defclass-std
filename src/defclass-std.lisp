@@ -10,9 +10,6 @@
   (:documentation "Main project package."))
 (in-package defclass-std)
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (qtlc:utilize-symbols '(:explode :make-keyword :symbolicate)))
-
 (defun extract-slot-names (line)
   "Finds all slot names in the `line'."
   (if (and line
@@ -45,13 +42,18 @@
           (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
                singleton-list)))))
 
+(defun mkkeyword (obj)
+  "Turn obj into a keyword."
+  (intern (string obj) :keyword))
+
 (defun split-fusioned-keyword (line)
   "Splits the fusioned keyword option, if present."
   (let ((fusioned-keywords (find-fusioned-keyword-options line)))
     (append (remove fusioned-keywords line)
             (if fusioned-keywords
-                (mapcar #'qtl:make-keyword
-                        (qtl:explode (symbol-name fusioned-keywords)))))))
+                (mapcar #'mkkeyword
+                        (coerce (symbol-name fusioned-keywords)
+                                'list))))))
 
 (defun check-for-repeated-keywords (line)
   "Verifies if keyword options were repeated. Mainly useful for avoiding things like (`:a' `:ai') together, or (`:r' `:w') instead of (`:a')."
@@ -73,31 +75,35 @@
 
 (defun replace-keywords (line prefix)
   "Receives a list of slots with keywords and returns a list of lists. Each sublist is a single slot, with all the options appended at the end."
-  (mapcar (lambda (slot)
-            (concatenate 'list
-                         (list slot)
-                         (if (member :a line)
-                             (list :accessor (qtl:symbolicate prefix slot)))
-                         (if (member :r line)
-                             (list :reader (qtl:symbolicate prefix slot)))
-                         (if (member :w line)
-                             (list :writer (qtl:symbolicate prefix slot)))
-                         (if (member :i line)
-                             (list :initarg (qtl:make-keyword slot)))
-                         (aif (member :std line)
-                              (if (eq (cadr it) :unbound)
-                                  nil
-                                  (list :initform (cadr it)))
-                              (if *default-std*
-                                  (list :initform nil)))
-                         (if (or (member :@@ line)
-                                 (member :static line))
-                             (list :allocation :class))
-                         (aif (member :doc line)
-                              (list :documentation (cadr it)))
-                         (aif (member :type line)
-                              (list :type  (cadr it)))))
-          (extract-slot-names line)))
+  (flet ((mksym (&rest args)
+           "Concatenates all args into one symbol."
+           (intern (with-output-to-string (s)
+                     (dolist (a args) (princ a s))))))
+    (mapcar (lambda (slot)
+              (concatenate 'list
+                           (list slot)
+                           (if (member :a line)
+                               (list :accessor (mksym prefix slot)))
+                           (if (member :r line)
+                               (list :reader (mksym prefix slot)))
+                           (if (member :w line)
+                               (list :writer (mksym prefix slot)))
+                           (if (member :i line)
+                               (list :initarg (mkkeyword slot)))
+                           (aif (member :std line)
+                                (if (eq (cadr it) :unbound)
+                                    nil
+                                    (list :initform (cadr it)))
+                                (if *default-std*
+                                    (list :initform nil)))
+                           (if (or (member :@@ line)
+                                   (member :static line))
+                               (list :allocation :class))
+                           (aif (member :doc line)
+                                (list :documentation (cadr it)))
+                           (aif (member :type line)
+                                (list :type  (cadr it)))))
+            (extract-slot-names line))))
 
 (defmacro defclass/std (name direct-superclasses direct-slots &rest options)
   `(defclass ,name ,direct-superclasses

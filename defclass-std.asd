@@ -6,8 +6,7 @@
   :version "0.1"
   :author "André Miranda"
   :license "LLGPL"
-  :depends-on (quickutil
-               anaphora)
+  :depends-on (anaphora)
   :components ((:module "src"
                 :components
                 ((:file "defclass-std"))))
