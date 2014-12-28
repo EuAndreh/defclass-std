@@ -5,7 +5,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :defclass-std)' in your Lisp.
 
-(plan 6)
+(plan 7)
 
 (deftest class/std->defclass/std->defclass-expansion-test
   (is-expand (class/std stub slot1 slot2 slot3 slot4 slot5)
@@ -100,10 +100,10 @@
   (is-expand (defclass/std unknown ()
                ((slot :unknown :keywords)))
              (DEFCLASS UNKNOWN ()
-                 ((SLOT :ACCESSOR SLOT
-                        :INITARG :SLOT
-                        :INITFORM NIL
-                        :UNKNOWN :KEYWORDS)))
+               ((SLOT :ACCESSOR SLOT
+                      :INITARG :SLOT
+                      :INITFORM NIL
+                      :KEYWORDS :UNKNOWN)))
              "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
 
 (run-test-all)
