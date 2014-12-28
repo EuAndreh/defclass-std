@@ -66,4 +66,42 @@
                        :DOCUMENTATION "Where it is")
                 (OWNER :WRITER OWNER :INITFORM "Me" :ALLOCATION :CLASS)))))
 
+(deftest test-*default-std*-binding
+  (is-expand (defclass/std default ()
+               ((with-std)))
+             (DEFCLASS DEFAULT ()
+               ((WITH-STD :ACCESSOR WITH-STD :INITARG :WITH-STD :INITFORM NIL)))
+             "*DEFAULT-STD* defaults to T, adding :INITFORM NIL")
+  (let (*default-std*)
+    (is-expand (defclass/std default ()
+               ((with-std)))
+             (DEFCLASS DEFAULT ()
+               ((WITH-STD :ACCESSOR WITH-STD :INITARG :WITH-STD)))
+             "When bound to NIL, *DEFAULT-STD* changes the behaviour of DEFCLASS/STD correctly, avoidind the addition of :INITFORM NIL.")))
+
+(deftest test-*with-prefix*-binding
+  (is-expand (defclass/std prefix ()
+               ((without-prefix)))
+             (DEFCLASS PREFIX ()
+               ((WITHOUT-PREFIX :ACCESSOR WITHOUT-PREFIX
+                                :INITARG :WITHOUT-PREFIX
+                                :INITFORM NIL)))
+             "*WITH-PREFIX* defaults to NIL, avoiding the addition of the class name as a prefix to the accessor.")
+  (let ((*with-prefix* t))
+    (is-expand (defclass/std prefix ()
+                 ((without-prefix :with)))
+               (DEFCLASS PREFIX ()
+                 ((WITHOUT-PREFIX :ACCESSOR PREFIX-WITHOUT-PREFIX
+                                  :INITARG :WITHOUT-PREFIX
+                                  :INITFORM NIL)))
+               "When bound to T, *WITH-PREFIX* changes the behaviour of DEFCLASS/STD, add the class name as a prefix to the accessor.")))
+
+(deftest test-ignore-unknown-keywords
+  (is-expand (defclass/std unknown ()
+               ((slot :unknown :keywords)))
+             (DEFCLASS UNKNOWN
+               ((SLOT :ACCESSOR SLOT :INITARG :SLOT :INITFORM NIL
+                      :UNKNOWN :KEYWORDS)))
+             "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
+
 (run-test-all)
