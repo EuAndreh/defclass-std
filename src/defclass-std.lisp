@@ -118,10 +118,24 @@
                                   (concatenate 'string (string name) "-")
                                   ""))
                       (split-kws-line (split-fusioned-keyword line)))
-                  (check-for-repeated-keywords split-kws-line)
+
+                  (print line)
+                  (print split-kws-line)
+
+;                  (check-for-repeated-keywords split-kws-line)
+
+                  (print (replace-keywords split-kws-line prefix))
+
                   (replace-keywords split-kws-line prefix)))
               direct-slots))
      ,@options))
+
+
+#+nil(defclass/std unknown ()
+  ((slot1 slot2 :ai :un                 ;nknown :keywords
+          )))
+
+;;(:AI :AR :AW :IA :IR :IW :RA :RE :RW :WA :WI :WR)
 
 (defmacro class/std (name &body defaulted-slots)
   `(defclass/std ,name ()
