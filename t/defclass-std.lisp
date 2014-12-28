@@ -106,6 +106,6 @@
                       :KEYWORDS :UNKNOWN)))
              "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
 
-(if (finalize) (error "Deu pala nos testes."))
-
 (run-test-all)
+
+(if (finalize) (error "Deu pala nos testes."))
