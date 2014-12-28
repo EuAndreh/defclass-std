@@ -27,6 +27,6 @@ install:
     fi
 
 script:
-  - cl -e '(in-package cl-user)'
+  - cl -e '(in-package :cl-user)'
        -e "(ql:quickload '(prove defclass-std))"
        -e '(asdf:test-system :defclass-std)'
