@@ -107,5 +107,3 @@
              "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
 
 (run-test-all)
-
-(if (finalize) (error "Deu pala nos testes."))
