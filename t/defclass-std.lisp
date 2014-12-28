@@ -5,7 +5,8 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :defclass-std)' in your Lisp.
 
-(setf prove:*debug-on-error* t)
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (setf prove:*debug-on-error* t))
 
 (plan 7)
 
