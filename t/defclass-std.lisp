@@ -96,12 +96,14 @@
                                   :INITFORM NIL)))
                "When bound to T, *WITH-PREFIX* changes the behaviour of DEFCLASS/STD, add the class name as a prefix to the accessor.")))
 
-"(deftest test-ignore-unknown-keywords
+(deftest test-ignore-unknown-keywords
   (is-expand (defclass/std unknown ()
                ((slot :unknown :keywords)))
-             (DEFCLASS UNKNOWN
-                 ((SLOT :ACCESSOR SLOT :INITARG :SLOT :INITFORM NIL
+             (DEFCLASS UNKNOWN ()
+                 ((SLOT :ACCESSOR SLOT
+                        :INITARG :SLOT
+                        :INITFORM NIL
                         :UNKNOWN :KEYWORDS)))
-             \"DEFCLASS/STD with unknown keywords works as expected, keeping them as they are.\"))"
+             "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
 
 (run-test-all)
