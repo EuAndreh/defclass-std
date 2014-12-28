@@ -131,15 +131,7 @@
                                   "")))
                   (multiple-value-bind (split-kws-line unknown-keywords)
                       (split-fusioned-keyword line)
-
-
-                    (print line)
-                    (print split-kws-line)
-
                     (check-for-repeated-keywords split-kws-line)
-
-                    (print (replace-keywords split-kws-line prefix unknown-keywords))
-
                     (replace-keywords split-kws-line prefix unknown-keywords))))
               direct-slots))
      ,@options))
