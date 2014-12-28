@@ -123,7 +123,7 @@
 
 (defmacro defclass/std (name direct-superclasses direct-slots &rest options)
   `(defclass ,name ,direct-superclasses
-     ,(apply #'concatenate
+     ,@(concatenate
              'list
              (mapcar
               (lambda (line)
