@@ -115,7 +115,10 @@
                                 (list :documentation (cadr it)))
                            (aif (member :type line)
                                 (list :type  (cadr it)))
-                           unknown-keywords))
+                           (sort unknown-keywords
+                                 (lambda (k1 k2)
+                                   (string< (string k1)
+                                            (string k2))))))
             (extract-slot-names line))))
 
 (defmacro defclass/std (name direct-superclasses direct-slots &rest options)
