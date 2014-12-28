@@ -18,30 +18,38 @@
       (cons (car line)
             (extract-slot-names (cdr line)))))
 
-(defvar *options* '(:a :r :w :i :static :with :with-prefix :@@ :static
+(defparameter *options* '(:a :r :w :i :static :with :with-prefix :@@ :static
                     :std :unbound :doc :type)
   "All available keyword options.")
 
-(defvar *default-std* t
+(defparameter *fusioned-keyword-combinations*
+  '(:ai :ar :aw :ia :ir :iw :ra :ri :rw :wa :wi :wr)
+  "All possible combinations of :a, :i, :r and :w.")
+
+(defparameter *default-std* t
   "Special var that changes the behaviour of the DEFCLASS/STD macro. If true, adds a :initform nil by default to every field, when unespecified. If false, adds nothing.")
 
-(defvar *with-prefix* nil
+(defparameter *with-prefix* nil
   "Special var that changes the behaviour of the DEFCLASS/STD macro. If tru, adds the class name as a prefix to every accessor/reader/writer function. If false, without the :with/:with-prefix slot option, adds nothing.")
 
 (defun find-fusioned-keyword-options (line)
   "Should return a singleton list with the only fusioned element. Throws an error otherwise."
-  (let ((singleton-list (set-difference (remove-if-not #'keywordp line)
-                                        *options*)))
-    (cond ((null singleton-list)
-           (if (or (member :a line)
-                   (member :r line)
-                   (member :w line)
-                   (member :i line))
-               nil
-               :ai)) ;; defaults to `:ai'
-          ((= 1 (length singleton-list)) (car singleton-list))
+  (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
+                                                 *options*))
+         (fusioned-keywords (intersection *fusioned-keyword-combinations*
+                                          maybe-unknown-keywords))
+         (unknown-keywords (set-difference maybe-unknown-keywords
+                                           fusioned-keywords)))
+    (cond ((null fusioned-keywords)
+           (unless (or (member :a line)
+                       (member :r line)
+                       (member :w line)
+                       (member :i line))
+             (values :ai unknown-keywords))) ;; defaults to `:ai'
+          ((= 1 (length fusioned-keywords)) (values (car fusioned-keywords)
+                                                    unknown-keywords))
           (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
-               singleton-list)))))
+                    fusioned-keywords)))))
 
 (defun mkkeyword (obj)
   "Turn obj into a keyword."
@@ -49,12 +57,15 @@
 
 (defun split-fusioned-keyword (line)
   "Splits the fusioned keyword option, if present."
-  (let ((fusioned-keywords (find-fusioned-keyword-options line)))
-    (append (remove fusioned-keywords line)
-            (if fusioned-keywords
+  (multiple-value-bind (fusioned-keywords-key unknown-keywords)
+      (find-fusioned-keyword-options line)
+    (values (append (remove fusioned-keywords-key
+                            (set-difference line unknown-keywords))
+              (when fusioned-keywords-key
                 (mapcar #'mkkeyword
-                        (coerce (symbol-name fusioned-keywords)
-                                'list))))))
+                        (coerce (symbol-name fusioned-keywords-key)
+                                'list))))
+            unknown-keywords)))
 
 (defun check-for-repeated-keywords (line)
   "Verifies if keyword options were repeated. Mainly useful for avoiding things like (`:a' `:ai') together, or (`:r' `:w') instead of (`:a')."
@@ -74,7 +85,7 @@
           ":R (reader) and :A (accessor) shouldn't be together: ~s."
           line))))
 
-(defun replace-keywords (line prefix)
+(defun replace-keywords (line prefix unknown-keywords)
   "Receives a list of slots with keywords and returns a list of lists. Each sublist is a single slot, with all the options appended at the end."
   (flet ((mksym (&rest args)
            "Concatenates all args into one symbol."
@@ -103,7 +114,8 @@
                            (aif (member :doc line)
                                 (list :documentation (cadr it)))
                            (aif (member :type line)
-                                (list :type  (cadr it)))))
+                                (list :type  (cadr it)))
+                           unknown-keywords))
             (extract-slot-names line))))
 
 (defmacro defclass/std (name direct-superclasses direct-slots &rest options)
@@ -116,26 +128,21 @@
                                       (member :with line)
                                       *with-prefix*)
                                   (concatenate 'string (string name) "-")
-                                  ""))
-                      (split-kws-line (split-fusioned-keyword line)))
+                                  "")))
+                  (multiple-value-bind (split-kws-line unknown-keywords)
+                      (split-fusioned-keyword line)
 
-                  (print line)
-                  (print split-kws-line)
 
-;                  (check-for-repeated-keywords split-kws-line)
+                    (print line)
+                    (print split-kws-line)
 
-                  (print (replace-keywords split-kws-line prefix))
+                    (check-for-repeated-keywords split-kws-line)
 
-                  (replace-keywords split-kws-line prefix)))
+                    (print (replace-keywords split-kws-line prefix unknown-keywords))
+
+                    (replace-keywords split-kws-line prefix unknown-keywords))))
               direct-slots))
      ,@options))
-
-
-#+nil(defclass/std unknown ()
-  ((slot1 slot2 :ai :un                 ;nknown :keywords
-          )))
-
-;;(:AI :AR :AW :IA :IR :IW :RA :RE :RW :WA :WI :WR)
 
 (defmacro class/std (name &body defaulted-slots)
   `(defclass/std ,name ()
