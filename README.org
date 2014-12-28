@@ -1,5 +1,6 @@
 * defclass-std
   [[https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master]]
+
   Most times, when sketching out a new class, I often commit lots of typos and forget to add an =:initform=.
 
   Also, the throw away class designed in the beginning may thrive and stay the same. If only there was a way to overcome these problems... There is!
