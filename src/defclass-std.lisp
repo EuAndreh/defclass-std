@@ -1,3 +1,4 @@
+(in-package cl-user)
 (defpackage defclass-std
   (:use cl)
   (:import-from anaphora

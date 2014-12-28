@@ -1,3 +1,4 @@
+(in-package cl-user)
 (defpackage defclass-std-asd
   (:use cl asdf))
 (in-package defclass-std-asd)

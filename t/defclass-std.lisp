@@ -1,3 +1,4 @@
+(in-package cl-user)
 (defpackage defclass-std-test
   (:use cl defclass-std prove))
 (in-package defclass-std-test)
