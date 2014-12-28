@@ -5,6 +5,8 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :defclass-std)' in your Lisp.
 
+(setf prove:*debug-mode-on* t)
+
 (plan 7)
 
 (deftest class/std->defclass/std->defclass-expansion-test
