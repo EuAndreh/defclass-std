@@ -10,13 +10,13 @@ env:
     - LISP=ccl32
     - LISP=clisp
     - LISP=clisp32
-    - LISP=cmucl
+#    - LISP=cmucl
     - LISP=ecl
 
-matrix:
-  allow_failures:
+#matrix:
+#  allow_failures:
     # CIM not available for CMUCL
-    - env: LISP=cmucl
+#    - env: LISP=cmucl
 
 install:
   - if [ -x ./install.sh ] && head -2 ./install.sh | grep '^# cl-travis' > /dev/null;
