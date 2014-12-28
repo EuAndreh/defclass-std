@@ -1,4 +1,6 @@
 * defclass-std
+  [[https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master][https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master]]
+
   [[https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master]]
 
   Most times, when sketching out a new class, I often commit lots of typos and forget to add an =:initform=.
