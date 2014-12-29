@@ -109,4 +109,7 @@
                       :KEYWORDS :UNKNOWN)))
              "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
 
+(deftest aff
+  (is (error "oij") "oij"))
+
 (run-test-all)

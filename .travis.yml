@@ -3,15 +3,15 @@ language: common-lisp
 env:
   matrix:
 #    - LISP=abcl
-    #- LISP=allegro
-    #- LISP=sbcl
-    #- LISP=sbcl32
+    - LISP=allegro
+    - LISP=sbcl
+    - LISP=sbcl32
     - LISP=ccl
-    #- LISP=ccl32
-    #- LISP=clisp
-    #- LISP=clisp32
+    - LISP=ccl32
+    - LISP=clisp
+    - LISP=clisp32
 #    - LISP=cmucl
-    #- LISP=ecl
+    - LISP=ecl
 
 #matrix:
 #  allow_failures:
