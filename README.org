@@ -10,12 +10,12 @@
   Everything compiles down to =DEFCLASS=.
 ** Usage
 #+BEGIN_SRC lisp
-  * (progn
-      (ql:quickload :defclass-std)
-      (defpackage defclass-std-user
-        (:use cl defclass-std))
-      (in-package defclass-std-user))
-  ; => T
+* (progn
+    (ql:quickload :defclass-std)
+    (defpackage defclass-std-user
+      (:use cl defclass-std))
+    (in-package defclass-std-user))
+; => T
 #+END_SRC
 
    A simple class defined with =DEFCLASS/STD= looks like this:
@@ -139,6 +139,28 @@
 
 (DEFCLASS PRE ()
   ((FIX :ACCESSOR PRE-FIX :INITARG :FIX)))
+#+END_SRC
+
+   Unknown keywords are left intact:
+#+BEGIN_SRC lisp
+(defclass/std unknown ()
+  ((slot :unknown :keywords)))
+
+; which expands to:
+
+(DEFCLASS UNKNOWN ()
+  ((SLOT :ACCESSOR SLOT :INITARG :SLOT :INITFORM NIL :KEYWORDS :UNKNOWN)))
+
+
+; Or, even using custom accessors:
+
+(defclass/std unknown ()
+  ((slot :unknown :wi :keywords)))
+
+; which expands to:
+
+(DEFCLASS UNKNOWN ()
+  ((SLOT :WRITER SLOT :INITARG :SLOT :INITFORM NIL :KEYWORDS :UNKNOWN)))
 #+END_SRC
 ** Examples:
 #+BEGIN_SRC lisp
@@ -320,6 +342,13 @@
   ((bridge number type name modelid uniqueid swversion pointsymbol on brightness
            hue saturation xy ct alert effect colormode reachable
            :with-prefix :std :unbound)))
+
+; or, using class/std:
+
+(class/std light
+  bridge number type name modelid uniqueid swversion pointsymbol on brightness
+  hue saturation xy ct alert effect colormode reachable
+  :std :unbound :with)
 
 ; or, with *default-std* set to nil and *with-prefix* set to t:
 
