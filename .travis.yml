@@ -36,7 +36,7 @@ script:
                    (uiop:quit -1)))'
        -e '(let ((test-results (prove:run (merge-pathnames
                                            "t/defclass-std.lisp"
-                                           (ql:where-is-system :defclass-std))))
+                                           (ql:where-is-system :defclass-std)))))
              (print test-results)
              (or test-results
-                 (uiop:quit -1))))'
+                 (uiop:quit -1)))'
