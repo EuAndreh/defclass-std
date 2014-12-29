@@ -5,9 +5,6 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :defclass-std)' in your Lisp.
 
-(eval-when (:compile-toplevel :load-toplevel :execute)
-  (setf prove:*debug-on-error* t))
-
 (plan 7)
 
 (deftest class/std->defclass/std->defclass-expansion-test
@@ -108,8 +105,5 @@
                       :INITFORM NIL
                       :KEYWORDS :UNKNOWN)))
              "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
-
-(deftest aff
-  (is (error "oij") "oij"))
 
 (run-test-all)
