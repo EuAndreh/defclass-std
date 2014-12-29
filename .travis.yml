@@ -42,4 +42,4 @@ script:
              (print test-results)
              (or test-results
                  (uiop:quit -1)))'
-# -e '(asdf:test-system :defclass-std)'
+#       -e '(asdf:test-system :defclass-std)'
