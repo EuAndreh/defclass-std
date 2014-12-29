@@ -123,20 +123,20 @@
 
 (defmacro defclass/std (name direct-superclasses direct-slots &rest options)
   `(defclass ,name ,direct-superclasses
-     ,@(concatenate
-             'list
-             (mapcar
-              (lambda (line)
-                (let ((prefix (if (or (member :with-prefix line)
-                                      (member :with line)
-                                      *with-prefix*)
-                                  (concatenate 'string (string name) "-")
-                                  "")))
-                  (multiple-value-bind (split-kws-line unknown-keywords)
-                      (split-fusioned-keyword line)
-                    (check-for-repeated-keywords split-kws-line)
-                    (replace-keywords split-kws-line prefix unknown-keywords))))
-              direct-slots))
+     ,@;;append;concatenate
+                                        ;'list
+     (mapcar
+      (lambda (line)
+        (let ((prefix (if (or (member :with-prefix line)
+                              (member :with line)
+                              *with-prefix*)
+                          (concatenate 'string (string name) "-")
+                          "")))
+          (multiple-value-bind (split-kws-line unknown-keywords)
+              (split-fusioned-keyword line)
+            (check-for-repeated-keywords split-kws-line)
+            (replace-keywords split-kws-line prefix unknown-keywords))))
+      direct-slots)
      ,@options))
 
 (defmacro class/std (name &body defaulted-slots)
