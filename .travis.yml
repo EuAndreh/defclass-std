@@ -34,7 +34,7 @@ script:
                  (lambda (c h)
                    (declare (ignore c h))
                    (uiop:quit -1)))'
-       -e '(or (prove:run (merge-pathnames \#p"t/defclass-std.lisp"
+       -e '(or (prove:run (merge-pathnames "t/defclass-std.lisp"
                                            (ql:where-is-system :defclass-std)))
                (uiop:quit -1))'
 #       -e '(asdf:test-system :defclass-std)'
