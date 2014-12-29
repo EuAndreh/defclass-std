@@ -137,9 +137,6 @@
         direct-slots)
      ,@options))
 
-(defclass/std vai ()
-  ((zzz aa zz slota slotu sloto)))
-
 (defmacro class/std (name &body defaulted-slots)
   `(defclass/std ,name ()
      ((,@defaulted-slots))))

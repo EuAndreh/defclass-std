@@ -6,8 +6,8 @@ env:
     - LISP=allegro
     - LISP=sbcl
     - LISP=sbcl32
-#    - LISP=ccl
-#    - LISP=ccl32
+    - LISP=ccl
+    - LISP=ccl32
     - LISP=clisp
     - LISP=clisp32
 #    - LISP=cmucl
@@ -42,3 +42,4 @@ script:
              (print test-results)
              (or test-results
                  (uiop:quit -1)))'
+# -e '(asdf:test-system :defclass-std)'
