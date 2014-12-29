@@ -25,8 +25,8 @@ install:
     else
       curl https://raw.githubusercontent.com/luismbo/cl-travis/master/install.sh | sh;
     fi
-
   - git clone https://github.com/fukamachi/prove
+
 script:
   - cl -e '(in-package :cl-user)'
        -e "(ql:quickload '(prove defclass-std))"
