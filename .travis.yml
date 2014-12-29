@@ -29,6 +29,6 @@ install:
 script:
   - cl -e '(in-package :cl-user)'
        -e "(ql:quickload '(prove defclass-std))"
-       -e '(or (prove:run (merge-pathnames #p"t/defclass-std.lisp"
+       -e '(or (prove:run (merge-pathnames "t/defclass-std.lisp"
                                            (ql:where-is-system :defclass-std)))
                (uiop:quit -1))'
