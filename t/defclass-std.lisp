@@ -107,7 +107,3 @@
              "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
 
 (run-test-all)
-
-
-(or (prove:run (merge-pathnames #p"t/defclass-std.lisp"
-                                (ql:where-is-system :defclass-std)))
