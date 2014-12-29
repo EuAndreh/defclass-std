@@ -38,6 +38,6 @@ script:
                      (merge-pathnames "t/defclass-std.lisp"
                                       (ql:where-is-system :defclass-std)))
 
-        (print test-results)
-        (or test-results
-            (uiop:quit -1)))'
+             (print test-results)
+             (or test-results
+                 (uiop:quit -1)))'
