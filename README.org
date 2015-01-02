@@ -374,7 +374,7 @@
   ; prints lots of stuff...
   ; => T
 #+END_SRC
-   Tests are also ran with [[https://travis-ci.org/EuAndreh/defclass-std][Travis CI]] using [[https://github.com/luismbo/cl-travis][cl-travis]]. Check it out!
+   Tests are also ran with [[https://travis-ci.org/EuAndreh/defclass-std][Travis CI]] using [[https://github.com/luismbo/cl-travis][cl-travis]] and [[https://github.com/KeenS/CIM][CIM]]. Check it out!
 
 ** Author
 

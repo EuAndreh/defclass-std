@@ -2,21 +2,15 @@ language: common-lisp
 
 env:
   matrix:
-#    - LISP=abcl
+    - LISP=abcl
     - LISP=allegro
     - LISP=sbcl
     - LISP=sbcl32
-#    - LISP=ccl
-#    - LISP=ccl32
+    - LISP=ccl
+    - LISP=ccl32
     - LISP=clisp
     - LISP=clisp32
-#    - LISP=cmucl
     - LISP=ecl
-
-#matrix:
-#  allow_failures:
-    # CIM not available for CMUCL
-#    - env: LISP=cmucl
 
 install:
   - if [ -x ./install.sh ] && head -2 ./install.sh | grep '^# cl-travis' > /dev/null;
@@ -26,8 +20,6 @@ install:
       curl https://raw.githubusercontent.com/luismbo/cl-travis/master/install.sh | sh;
     fi
 
-  - git clone https://github.com/fukamachi/prove
-
 script:
   - cl -e '(in-package :cl-user)'
        -e "(ql:quickload '(prove defclass-std))"
@@ -36,10 +28,6 @@ script:
                  (lambda (c h)
                    (declare (ignore c h))
                    (uiop:quit -1)))'
-       -e '(let ((test-results (prove:run (merge-pathnames
-                                           "t/defclass-std.lisp"
-                                           (ql:where-is-system :defclass-std)))))
-             (print test-results)
+       -e '(let ((test-results (prove:run :cl21-test)))
              (or test-results
                  (uiop:quit -1)))'
-#       -e '(asdf:test-system :defclass-std)'
