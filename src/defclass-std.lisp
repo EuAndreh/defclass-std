@@ -1,6 +1,8 @@
 (in-package cl-user)
 (defpackage defclass-std
   (:use cl)
+  (:import-from alexandria
+                make-keyword)
   (:import-from anaphora
                 aif
                 it)
@@ -8,7 +10,7 @@
            *default-std*
            *with-prefix*
            class/std)
-  (:documentation "Main project package."))
+  (:documentation "Main (and only) project package."))
 (in-package defclass-std)
 
 (defun extract-slot-names (line)
@@ -19,7 +21,7 @@
             (extract-slot-names (cdr line)))))
 
 (defparameter *options* '(:a :r :w :i :static :with :with-prefix :@@ :static
-                    :std :unbound :doc :type)
+                          :std :unbound :doc :type)
   "All available keyword options.")
 
 (defparameter *fusioned-keyword-combinations*
@@ -51,10 +53,6 @@
           (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
                     fusioned-keywords)))))
 
-(defun mkkeyword (obj)
-  "Turn obj into a keyword."
-  (intern (string obj) :keyword))
-
 (defun split-fusioned-keyword (line)
   "Splits the fusioned keyword option, if present."
   (multiple-value-bind (fusioned-keywords-key unknown-keywords)
@@ -62,7 +60,7 @@
     (values (append (remove fusioned-keywords-key
                             (set-difference line unknown-keywords))
               (when fusioned-keywords-key
-                (mapcar #'mkkeyword
+                (mapcar #'make-keyword
                         (coerce (symbol-name fusioned-keywords-key)
                                 'list))))
             unknown-keywords)))
@@ -101,7 +99,7 @@
                            (if (member :w line)
                                (list :writer (mksym prefix slot)))
                            (if (member :i line)
-                               (list :initarg (mkkeyword slot)))
+                               (list :initarg (make-keyword slot)))
                            (aif (member :std line)
                                 (if (eq (cadr it) :unbound)
                                     nil
