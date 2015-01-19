@@ -368,7 +368,9 @@
    If you find any bug or inconsistency in the code, or if you find it too hard to use, feel free to open an issue.
 
 ** Tests
-   Or to run from the REPL:
+   This library is tested under SBCL, Allegro, CCL, CLISP and ECL Common Lisp implementations.
+
+   To run all the defined tests, use:
 #+BEGIN_SRC lisp
   * (asdf:test-system :defclass-std)
   ; prints lots of stuff...
@@ -378,12 +380,12 @@
 
 ** Author
 
-+ André Miranda
+  + André Miranda
 
 ** Copyright
 
-Copyright (c) 2014 André Miranda
+   Copyright (c) 2014 André Miranda
 
 ** License
 
-Licensed under the LLGPL License.
+   Licensed under the LLGPL License.
