@@ -12,16 +12,6 @@
                 :components
                 ((:file "defclass-std"))))
   :description "A shortcut macro to write DEFCLASS forms quickly."
-  :long-description
-  #.(with-open-file (stream (merge-pathnames
-                             #p"README.org"
-                             (or *load-pathname* *compile-file-pathname*))
-                            :if-does-not-exist nil
-                            :direction :input)
-      (when stream
-        (let ((seq (make-array (file-length stream)
-                               :element-type 'character
-                               :fill-pointer t)))
-          (setf (fill-pointer seq) (read-sequence seq stream))
-          seq)))
+  :long-description #.(uiop:read-file-string
+                       (uiop:subpathname *load-pathname* "README.org"))
   :in-order-to ((test-op (test-op defclass-std-test))))

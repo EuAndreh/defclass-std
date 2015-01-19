@@ -10,6 +10,7 @@ env:
     - LISP=ccl32
     - LISP=clisp
     - LISP=clisp32
+    - LISP=cmucl
     - LISP=ecl
 
 install:
