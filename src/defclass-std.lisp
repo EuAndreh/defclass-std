@@ -57,12 +57,14 @@
   "Splits the fusioned keyword option, if present."
   (multiple-value-bind (fusioned-keywords-key unknown-keywords)
       (find-fusioned-keyword-options line)
-    (values (append (remove fusioned-keywords-key
-                            (set-difference line unknown-keywords))
-              (when fusioned-keywords-key
-                (mapcar #'make-keyword
-                        (coerce (symbol-name fusioned-keywords-key)
-                                'list))))
+    (values (append (remove-if (lambda (element)
+                                 (or (eql element fusioned-keywords-key)
+                                     (member element unknown-keywords)))
+                               line)
+                    (when fusioned-keywords-key
+                      (mapcar #'make-keyword
+                              (coerce (symbol-name fusioned-keywords-key)
+                                      'list))))
             unknown-keywords)))
 
 (defun check-for-repeated-keywords (line)
