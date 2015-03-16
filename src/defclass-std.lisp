@@ -122,6 +122,7 @@
             (extract-slot-names line))))
 
 (defmacro defclass/std (name direct-superclasses direct-slots &rest options)
+  "Shortcut macro to the DEFCLASS macro. See README for syntax and usage."
   `(defclass ,name ,direct-superclasses
      ,@(mapcar
         (lambda (line)
@@ -138,5 +139,6 @@
      ,@options))
 
 (defmacro class/std (name &body defaulted-slots)
+  "Shortcut macro to the DEFCLASS/STD macro."
   `(defclass/std ,name ()
      ((,@defaulted-slots))))
