@@ -360,9 +360,9 @@
    This project depends only on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
 
 ** Installation
-   1. =cd= to your [[quicklisp.org][Quicklisp]] =local-projects= folder.
-   2. Clone the repo =git clone https://github.com/EuAndreh/defclass-std=.
-   3. Load it with Quicklisp: =(ql:quickload :defclass-std)=
+   Just load it with Quicklisp!
+
+   =(ql:quickload :defclass-std)=
 
 ** Bugs
    If you find any bug or inconsistency in the code, or if you find it too hard to use, feel free to open an issue.
