@@ -5,7 +5,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :defclass-std)' in your Lisp.
 
-(plan 7)
+(plan 8)
 
 (deftest class/std->defclass/std->defclass-expansion-test
   (is-expand (class/std stub slot1 slot2 slot3 slot4 slot5)
@@ -105,5 +105,17 @@
                       :INITFORM NIL
                       :KEYWORDS :UNKNOWN)))
              "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
+
+(deftest printing-unreadably-form-expansion-test
+  (is-expand (printing-unreadably (id name) (class/std employee name id salary))
+             (progn
+               (class/std employee
+                 name
+                 id
+                 salary)
+               (defmethod print-object ((employee employee) $stream)
+                 (print-unreadable-object (employee $stream :type t :identity t)
+                   (format $STREAM "ID: ~s, NAME: ~s"
+                           (id employee) (name employee)))))))
 
 (run-test-all)

@@ -9,7 +9,8 @@
   (:export defclass/std
            *default-std*
            *with-prefix*
-           class/std)
+           class/std
+           printing-unreadably)
   (:documentation "Main (and only) project package."))
 (in-package defclass-std)
 
@@ -142,3 +143,19 @@
   "Shortcut macro to the DEFCLASS/STD macro."
   `(defclass/std ,name ()
      ((,@defaulted-slots))))
+
+(defmacro printing-unreadably (fields-list class-std-form
+                               &key (type t) (identity t))
+  "Automatically generates the unreadable printing boiler plate to print classes and its fields (from FIELDS-LIST)."
+  (let ((g!stream (gensym "STREAM"))
+        (name (cadr class-std-form)))
+    `(progn ,class-std-form
+            (defmethod print-object ((,name ,name) ,g!stream)
+              (print-unreadable-object (,name ,g!stream
+                                        :type ,type
+                                        :identity ,identity)
+                (format ,g!stream
+                        ,(format nil "~{~a: ~~s~^,~^ ~}" fields-list)
+                        ,@(mapcar (lambda (a1)
+                                    `(,a1 ,name))
+                                  fields-list)))))))

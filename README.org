@@ -383,10 +383,6 @@
   + André Miranda
   + [[https://github.com/jorams][Joram Schrijver]]
 
-** Copyright
-
-   Copyright (c) 2014 André Miranda
-
 ** License
 
    Licensed under the LLGPL License.
