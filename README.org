@@ -356,6 +356,11 @@
   bridge number type name modelid uniqueid swversion pointsymbol on brightness
   hue saturation xy ct alert effect colormode reachable)
 #+END_SRC
+
+   There's a shortcut to setup a basic printing behaviour of a class, using =printing-unreadably=:
+#+BEGIN_SRC lisp
+(printing-unreadably (field2 field3) (class/std myclass field1 field2 field3))
+#+END_SRC
 ** Dependencies
    This project depends only on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
 
