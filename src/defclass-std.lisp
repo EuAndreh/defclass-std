@@ -15,7 +15,7 @@
 (in-package defclass-std)
 
 (defun extract-slot-names (line)
-  "Finds all slot names in the `line'."
+  "Finds all slot names in the LINE."
   (if (and line
            (not (keywordp (car line))))
       (cons (car line)
@@ -60,7 +60,7 @@
                          (member :r line)
                          (member :w line)
                          (member :i line))
-               (values :ai unknown-keywords-and-values))) ;; defaults to `:ai'
+               (values :ai unknown-keywords-and-values))) ;; defaults to :AI
             ((= 1 (length fusioned-keywords))
              (values (car fusioned-keywords)
                      unknown-keywords-and-values))
@@ -82,7 +82,7 @@
             unknown-keywords)))
 
 (defun check-for-repeated-keywords (line)
-  "Verifies if keyword options were repeated. Mainly useful for avoiding things like (`:a' `:ai') together, or (`:r' `:w') instead of (`:a')."
+  "Verifies if keyword options were repeated. Mainly useful for avoiding things like (:A :AI) together, or (:R :W) instead of (:A)."
   (cond ((and (member :w line)
               (member :r line))
          (error
