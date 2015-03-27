@@ -37,22 +37,35 @@
 
 (defun find-fusioned-keyword-options (line)
   "Should return a singleton list with the only fusioned element. Throws an error otherwise."
-  (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
-                                                 *options*))
-         (fusioned-keywords (intersection *fusioned-keyword-combinations*
-                                          maybe-unknown-keywords))
-         (unknown-keywords (set-difference maybe-unknown-keywords
-                                           fusioned-keywords)))
-    (cond ((null fusioned-keywords)
-           (unless (or (member :a line)
-                       (member :r line)
-                       (member :w line)
-                       (member :i line))
-             (values :ai unknown-keywords))) ;; defaults to `:ai'
-          ((= 1 (length fusioned-keywords)) (values (car fusioned-keywords)
-                                                    unknown-keywords))
-          (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
-                    fusioned-keywords)))))
+  (labels ((first-element (elements list)
+           "Returns the element that appears first in the LIST."
+           (if elements
+               (if (= 1 (length elements))
+                   (car elements)
+                   (if (< (position (first elements) list)
+                          (position (second elements) list))
+                       (first-element `(,(first elements) ,@(cddr elements)) list)
+                       (first-element  (cdr elements) list))))))
+    (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
+                                                   *options*))
+           (fusioned-keywords (intersection *fusioned-keyword-combinations*
+                                            maybe-unknown-keywords))
+           (unknown-keywords-and-values
+            (member (first-element
+                     (set-difference maybe-unknown-keywords fusioned-keywords)
+                     line)
+                    line)))
+      (cond ((null fusioned-keywords)
+             (unless (or (member :a line)
+                         (member :r line)
+                         (member :w line)
+                         (member :i line))
+               (values :ai unknown-keywords-and-values))) ;; defaults to `:ai'
+            ((= 1 (length fusioned-keywords))
+             (values (car fusioned-keywords)
+                     unknown-keywords-and-values))
+            (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
+                      fusioned-keywords))))))
 
 (defun split-fusioned-keyword (line)
   "Splits the fusioned keyword option, if present."
@@ -86,7 +99,7 @@
           ":R (reader) and :A (accessor) shouldn't be together: ~s."
           line))))
 
-(defun replace-keywords (line prefix unknown-keywords)
+(defun replace-keywords (line prefix unknown-keywords-and-values)
   "Receives a list of slots with keywords and returns a list of lists. Each sublist is a single slot, with all the options appended at the end."
   (flet ((mksym (&rest args)
            "Concatenates all args into one symbol."
@@ -116,10 +129,7 @@
                                 (list :documentation (cadr it)))
                            (aif (member :type line)
                                 (list :type  (cadr it)))
-                           (sort unknown-keywords
-                                 (lambda (k1 k2)
-                                   (string< (string k1)
-                                            (string k2))))))
+                           unknown-keywords-and-values))
             (extract-slot-names line))))
 
 (defmacro defclass/std (name direct-superclasses direct-slots &rest options)
@@ -132,10 +142,12 @@
                                 *with-prefix*)
                             (concatenate 'string (string name) "-")
                             "")))
-            (multiple-value-bind (split-kws-line unknown-keywords)
+            (multiple-value-bind (split-kws-line unknown-keywords-and-values)
                 (split-fusioned-keyword line)
               (check-for-repeated-keywords split-kws-line)
-              (replace-keywords split-kws-line prefix unknown-keywords))))
+              (replace-keywords split-kws-line
+                                prefix
+                                unknown-keywords-and-values))))
         direct-slots)
      ,@options))
 

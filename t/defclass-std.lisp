@@ -103,8 +103,17 @@
                ((SLOT :ACCESSOR SLOT
                       :INITARG :SLOT
                       :INITFORM NIL
-                      :KEYWORDS :UNKNOWN)))
-             "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are."))
+                      :UNKNOWN :KEYWORDS)))
+             "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are.")
+  (is-expand (defclass/std unknown ()
+               ((slot :unknown keywords :and values)))
+             (DEFCLASS UNKNOWN ()
+               ((SLOT :ACCESSOR SLOT
+                      :INITARG :SLOT
+                      :INITFORM NIL
+                      :UNKNOWN KEYWORDS
+                      :AND VALUES)))
+             "DEFCLASS/STD with unknown keywords/values pairs works as expected, keeping them as they are."))
 
 (deftest printing-unreadably-form-expansion-test
   (is-expand (printing-unreadably (id name) (class/std employee name id salary))
