@@ -14,10 +14,11 @@ install:
 
 script:
   - cl -l defclass-std -l prove -l cl-coveralls
-       -e '(setf prove:*debug-on-error* t
-                 *debugger-hook* (lambda (c h)
-                                   (declare (ignore c h))
-                                   (uiop:quit -1)))'
-       -e '(or (coveralls:with-coveralls (:exclude "t")
-                 (prove:run :defclass-std-test))
-               (uiop:quit -1))'
+       -e '(progn
+            (setf prove:*debug-on-error* t
+                  *debugger-hook* (lambda (c h)
+                                    (declare (ignore c h))
+                                    (uiop:quit -1)))
+            (or (coveralls:with-coveralls (:exclude "t")
+                  (prove:run :defclass-std-test))
+                (uiop:quit -1))'
