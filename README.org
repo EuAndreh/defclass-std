@@ -1,5 +1,6 @@
 * defclass-std
   [[https://travis-ci.org/EuAndreh/defclass-std][https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master]]
+  [[https://coveralls.io/r/EuAndreh/defclass-std][https://coveralls.io/repos/EuAndreh/defclass-std/badge.svg?branch=master]]
 
   Most times, when sketching out a new class, I often commit lots of typos and forget to add an =:initform=.
 

@@ -93,8 +93,7 @@
             unknown-keywords)))
 
 (define-condition mixed-keyword-error (defclass/std-error)
-  (
-   (line :initarg line :reader line :type cons
+  ((line :initarg line :reader line :type cons
          :documentation "The original line where the error was thrown."))
   (:report (lambda (error stream)
              (format stream (text error) (line error)))))
