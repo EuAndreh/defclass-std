@@ -21,4 +21,4 @@ script:
                                     (uiop:quit -1)))
             (or (coveralls:with-coveralls (:exclude "t")
                   (prove:run :defclass-std-test))
-                (uiop:quit -1))'
+                (uiop:quit -1)))'
