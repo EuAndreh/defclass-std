@@ -5,13 +5,12 @@ env:
     - LISP=sbcl COVERALLS=true
     - LISP=ccl
     - LISP=clisp
-    - LISP=ecl
+#    - LISP=ecl
     - LISP=abcl
 
 install:
   - curl https://raw.githubusercontent.com/luismbo/cl-travis/master/install.sh | sh;
   - git clone https://github.com/fukamachi/cl-coveralls
-  - git clone https://github.com/EuAndreh/CLSS
 
 script:
   - cl -l defclass-std -l prove -l cl-coveralls -l clss
