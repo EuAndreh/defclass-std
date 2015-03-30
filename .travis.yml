@@ -13,7 +13,7 @@ install:
   - git clone https://github.com/fukamachi/cl-coveralls
 
 script:
-  - cl -l defclass-std -l prove -l cl-coveralls -l clss
+  - cl -l defclass-std -l prove -l cl-coveralls
        -e '(setf prove:*debug-on-error* t
                  *debugger-hook* (lambda (c h)
                                    (declare (ignore c h))
