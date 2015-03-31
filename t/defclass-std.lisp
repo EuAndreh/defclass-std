@@ -5,7 +5,7 @@
 
 ;; NOTE: To run this test file, execute `(asdf:test-system :defclass-std)' in your Lisp.
 
-(plan 8)
+(plan 9)
 
 (deftest class/std->defclass/std->defclass-expansion-test
   (is-expand (class/std stub slot1 slot2 slot3 slot4 slot5)
@@ -128,16 +128,19 @@
                            (id employee) (name employee)))))))
 
 (deftest repeated-keywords-errors-test
-  (is-error (defclass/std class1 ()
-              ((field :wr)))
+  (is-error (macroexpand-1
+             '(defclass/std class1 ()
+               ((field :wr))))
             'simple-error
             ":WR throws error.")
-  (is-error (defclass/std class2 ()
-              ((field :wa)))
+  (is-error (macroexpand-1
+             '(defclass/std class2 ()
+               ((field :wa))))
             'simple-error
             ":WA throws error.")
-  (is-error (defclass/std class3 ()
-              ((field :ra)))
+  (is-error (macroexpand-1
+             '(defclass/std class3 ()
+               ((field :ra))))
             'simple-error
             ":RA throws error."))
 
