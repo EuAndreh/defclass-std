@@ -143,5 +143,9 @@
                ((field :ra))))
             'simple-error
             ":RA throws error."))
+(deftest first-el-test
+  (is (first-el '(:a :b :c :d :e) '(:f :b :c :d :e :a))
+      :b
+      "FIND-EL"))
 
 (run-test-all)
