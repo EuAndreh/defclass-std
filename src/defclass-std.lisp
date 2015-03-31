@@ -64,9 +64,7 @@
                (values :ai unknown-keywords-and-values))) ;; defaults to :AI
             ((= 1 (length fusioned-keywords))
              (values (car fusioned-keywords)
-                     unknown-keywords-and-values))
-            #+nil(t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
-                      fusioned-keywords))))))
+                     unknown-keywords-and-values))))))
 
 (defun split-fusioned-keyword (line)
   "Splits the fusioned keyword option, if present."
