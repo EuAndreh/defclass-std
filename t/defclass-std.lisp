@@ -104,16 +104,33 @@
                       :INITARG :SLOT
                       :INITFORM NIL
                       :UNKNOWN :KEYWORDS)))
-             "DEFCLASS/STD with unknown keywords works as expected, keeping them as they are.")
+             "DEFCLASS/STD with unknown keywords/values pairs works as expected, keeping them as they are, when no other option is present.")
   (is-expand (defclass/std unknown ()
-               ((slot :unknown keywords :and values)))
+               ((slot :wi :unknown keywords :and values)))
+             (DEFCLASS UNKNOWN ()
+               ((SLOT :WRITER SLOT
+                      :INITARG :SLOT
+                      :INITFORM NIL
+                      :UNKNOWN KEYWORDS
+                      :AND VALUES)))
+             "DEFCLASS/STD with unknown keywords/values pairs works as expected, keeping them as they are, when other options are present.")
+  (is-expand (defclass/std unknown ()
+               ((slot :unknown keywords :without-values)))
              (DEFCLASS UNKNOWN ()
                ((SLOT :ACCESSOR SLOT
                       :INITARG :SLOT
                       :INITFORM NIL
                       :UNKNOWN KEYWORDS
-                      :AND VALUES)))
-             "DEFCLASS/STD with unknown keywords/values pairs works as expected, keeping them as they are."))
+                      :WITHOUT-VALUES)))
+             "DEFCLASS/STD with unknown keywords without values pairs works as expected, when no other option is present.")
+  (is-expand (defclass/std unknown ()
+               ((slot :a :unknown keywords :without-values)))
+             (DEFCLASS UNKNOWN ()
+               ((SLOT :ACCESSOR SLOT
+                      :INITFORM NIL
+                      :UNKNOWN KEYWORDS
+                      :WITHOUT-VALUES)))
+             "DEFCLASS/STD with unknown keywords without values pairs works as expected, when other options are present."))
 
 (deftest printing-unreadably-form-expansion-test
   (is-expand (printing-unreadably (id name) (class/std employee name id salary))

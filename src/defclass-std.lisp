@@ -50,7 +50,7 @@
             (extract-slot-names (cdr line)))))
 
 (defun extract-unkown-keywords (line)
-  "Finds pairs of unknown-keyword => values in LINE."
+  "Finds pairs of unknown-keywords (and optional values) in LINE."
   (if line
       (let ((slot (car line)))
         (cond ((equal line (extract-slot-names line)) nil)
@@ -59,6 +59,11 @@
                (extract-unkown-keywords (cdr line)))
               ((member slot *paired-keywords*)
                (extract-unkown-keywords (cddr line)))
+              ((or (member (second line) (append *standalone-keywords*
+                                                 *paired-keywords*))
+                   (null (cdr line)))
+               (cons (car line)
+                     (extract-unkown-keywords (cdr line))))
               (t (append (subseq line 0 2)
                          (extract-unkown-keywords (cddr line))))))))
 
