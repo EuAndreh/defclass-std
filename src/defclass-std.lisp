@@ -40,13 +40,14 @@
   (labels ((first-el (elements list)
            "Returns the element that appears first in the LIST."
            (if elements
-               (if (= 1 (length elements))
-                   (car elements)
-                   (if (< (position (first elements) list)
-                          (position (second elements) list))
-                       (first-el (cons (first elements) (cddr elements))
-                                      list)
-                       (first-el  (cdr elements) list))))))
+               (cond ((= 1 (length elements))
+                      (car elements))
+                     ((< (position (first elements) list)
+                         (position (second elements) list))
+
+                      (first-el (cons (first elements) (cddr elements))
+                                list))
+                     (t (first-el  (cdr elements) list))))))
     (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
                                                    *options*))
            (fusioned-keywords (intersection *fusioned-keyword-combinations*
