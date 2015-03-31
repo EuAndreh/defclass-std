@@ -37,22 +37,22 @@
 
 (defun find-fusioned-keyword-options (line)
   "Should return a singleton list with the only fusioned element. Throws an error otherwise."
-  (labels ((first-element (elements list)
+  (labels ((first-el (elements list)
            "Returns the element that appears first in the LIST."
            (if elements
                (if (= 1 (length elements))
                    (car elements)
                    (if (< (position (first elements) list)
                           (position (second elements) list))
-                       (first-element (cons (first elements) (cddr elements))
+                       (first-el (cons (first elements) (cddr elements))
                                       list)
-                       (first-element  (cdr elements) list))))))
+                       (first-el  (cdr elements) list))))))
     (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
                                                    *options*))
            (fusioned-keywords (intersection *fusioned-keyword-combinations*
                                             maybe-unknown-keywords))
            (unknown-keywords-and-values
-            (member (first-element
+            (member (first-el
                      (set-difference maybe-unknown-keywords fusioned-keywords)
                      line)
                     line)))
