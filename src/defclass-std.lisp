@@ -45,7 +45,7 @@
                      ((> (position (first elements) list)
                          (position (second elements) list))
                       (first-el  (cdr elements) list))
-                     (t (first-el (cons (first elements) (cddr elements)) list))))))
+                     (t (funcall first-el (cons (first elements) (cddr elements)) list))))))
     (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
                                                    *options*))
            (fusioned-keywords (intersection *fusioned-keyword-combinations*
