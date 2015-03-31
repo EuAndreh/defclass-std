@@ -39,13 +39,15 @@
   "Should return a singleton list with the only fusioned element. Throws an error otherwise."
   (labels ((first-el (elements list)
            "Returns the element that appears first in the LIST."
-           (if elements
-               (cond ((= 1 (length elements))
-                      (car elements))
-                     ((> (position (first elements) list)
-                         (position (second elements) list))
-                      (first-el  (cdr elements) list))
-                     (t (funcall first-el (cons (first elements) (cddr elements)) list))))))
+           (let ((list-without-second-el (cons (first elements)
+                                               (cddr elements))))
+             (if elements
+                 (cond ((= 1 (length elements))
+                        (car elements))
+                       ((> (position (first elements) list)
+                           (position (second elements) list))
+                        (first-el (cdr elements) list))
+                       (t (first-el list-without-second-el list)))))))
     (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
                                                    *options*))
            (fusioned-keywords (intersection *fusioned-keyword-combinations*
