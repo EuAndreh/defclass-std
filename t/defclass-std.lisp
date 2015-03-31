@@ -127,4 +127,18 @@
                    (format $STREAM "ID: ~s, NAME: ~s"
                            (id employee) (name employee)))))))
 
+(deftest repeated-keywords-errors-test
+  (is-error (defclass/std class1 ()
+              ((field :wr)))
+            'simple-error
+            ":WR throws error.")
+  (is-error (defclass/std class2 ()
+              ((field :wa)))
+            'simple-error
+            ":WA throws error.")
+  (is-error (defclass/std class3 ()
+              ((field :ra)))
+            'simple-error
+            ":RA throws error."))
+
 (run-test-all)

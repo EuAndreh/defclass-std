@@ -66,7 +66,7 @@
             ((= 1 (length fusioned-keywords))
              (values (car fusioned-keywords)
                      unknown-keywords-and-values))
-            (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
+            #+nil(t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
                       fusioned-keywords))))))
 
 (defun split-fusioned-keyword (line)
