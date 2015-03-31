@@ -35,37 +35,39 @@
 (defparameter *with-prefix* nil
   "Special var that changes the behaviour of the DEFCLASS/STD macro. If tru, adds the class name as a prefix to every accessor/reader/writer function. If false, without the :with/:with-prefix slot option, adds nothing.")
 
+(defun first-el (elements list)
+  "Returns the element from the ELEMENTS list that appears first in the LIST."
+  (if elements
+      (cond ((= 1 (length elements))
+             (car elements))
+            ((> (position (first elements) list)
+                (position (second elements) list))
+             (first-el (cdr elements) list))
+            (t (first-el (cons (first elements)
+                               (cddr elements))
+                         list)))))
+
 (defun find-fusioned-keyword-options (line)
   "Should return a singleton list with the only fusioned element. Throws an error otherwise."
-  (labels ((first-el (elements list)
-           "Returns the element that appears first in the LIST."
-           (let ((list-without-second-el (cons (first elements)
-                                               (cddr elements))))
-             (if elements
-                 (cond ((= 1 (length elements))
-                        (car elements))
-                       ((> (position (first elements) list)
-                           (position (second elements) list))
-                        (first-el (cdr elements) list))
-                       (t (first-el list-without-second-el list)))))))
-    (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
-                                                   *options*))
-           (fusioned-keywords (intersection *fusioned-keyword-combinations*
-                                            maybe-unknown-keywords))
-           (unknown-keywords-and-values
-            (member (first-el
-                     (set-difference maybe-unknown-keywords fusioned-keywords)
-                     line)
-                    line)))
-      (cond ((null fusioned-keywords)
-             (unless (or (member :a line)
-                         (member :r line)
-                         (member :w line)
-                         (member :i line))
-               (values :ai unknown-keywords-and-values))) ;; defaults to :AI
-            ((= 1 (length fusioned-keywords))
-             (values (car fusioned-keywords)
-                     unknown-keywords-and-values))))))
+
+  (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
+                                                 *options*))
+         (fusioned-keywords (intersection *fusioned-keyword-combinations*
+                                          maybe-unknown-keywords))
+         (unknown-keywords-and-values
+          (member (first-el
+                   (set-difference maybe-unknown-keywords fusioned-keywords)
+                   line)
+                  line)))
+    (cond ((null fusioned-keywords)
+           (unless (or (member :a line)
+                       (member :r line)
+                       (member :w line)
+                       (member :i line))
+             (values :ai unknown-keywords-and-values))) ;; defaults to :AI
+          ((= 1 (length fusioned-keywords))
+           (values (car fusioned-keywords)
+                   unknown-keywords-and-values)))))
 
 (defun split-fusioned-keyword (line)
   "Splits the fusioned keyword option, if present."
