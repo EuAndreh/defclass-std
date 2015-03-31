@@ -3,8 +3,8 @@ language: common-lisp
 env:
   matrix:
     - LISP=sbcl COVERALLS=true
-    - LISP=ccl
-    - LISP=clisp
+##    - LISP=ccl
+##    - LISP=clisp
 #    - LISP=ecl
 #    - LISP=abcl
 
