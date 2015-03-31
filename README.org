@@ -6,16 +6,14 @@
 
   Also, the throw away class designed in the beginning may thrive and stay the same. If only there was a way to overcome these problems... There is!
 
-  This simple macro atempts to give a very DRY and succint interface to the common =DEFCLASS= form. The goal is to offer all capabilities of a normal =DEFCLASS=, only in a more compact way.
+  This simple macro atempts to give a very DRY and succint interface to the common =DEFCLASS= form. The goal is to offer most of the capabilities of a normal =DEFCLASS=, only in a more compact way.
 
   Everything compiles down to =DEFCLASS=.
 ** Usage
 #+BEGIN_SRC lisp
-* (progn
-    (ql:quickload :defclass-std)
-    (defpackage defclass-std-user
-      (:use cl defclass-std))
-    (in-package defclass-std-user))
+* (ql:quickload :defclass-std)
+; => (:DEFCLASS-STD)
+* (import 'defclass-std:defclass/std)
 ; => T
 #+END_SRC
 
@@ -54,7 +52,7 @@
 (defclass/std omit-std ()
   ((slot :std :unbound)))
 
-; which is equivalent to:
+; which is (semantically) equivalent to:
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (setf *default-std* nil))
 (defclass/std omit-std ()
