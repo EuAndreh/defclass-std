@@ -35,14 +35,6 @@
 (defparameter *with-prefix* nil
   "Special var that changes the behaviour of the DEFCLASS/STD macro. If tru, adds the class name as a prefix to every accessor/reader/writer function. If false, without the :with/:with-prefix slot option, adds nothing.")
 
-(define-condition defclass/std-error (error)
-  ((text :initarg text :reader text :type string
-         :documentation "The formatting string to print the error message.")))
-
-(define-condition fusioned-keys-error (defclass/std-error)
-  ((keys :initarg keys :type keyword :reader keys
-         :documentation "Mal-formed fusioned keyword.")))
-
 (defun find-fusioned-keyword-options (line)
   "Should return a singleton list with the only fusioned element. Throws an error otherwise."
   (labels ((first-element (elements list)
@@ -53,7 +45,7 @@
                    (if (< (position (first elements) list)
                           (position (second elements) list))
                        (first-element (cons (first elements)
-                                            (cddr elements))
+                                             (cddr elements))
                                       list)
                        (first-element  (cdr elements) list))))))
     (let* ((maybe-unknown-keywords (set-difference (remove-if-not #'keywordp line)
@@ -74,9 +66,8 @@
             ((= 1 (length fusioned-keywords))
              (values (car fusioned-keywords)
                      unknown-keywords-and-values))
-            (t (error 'defclass/std-error
-                      :text "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
-                      :keys fusioned-keywords))))))
+            (t (error "Too many fusioned keyword options in DEFCLASS/STD: ~s. Invalid keyword option."
+                      fusioned-keywords))))))
 
 (defun split-fusioned-keyword (line)
   "Splits the fusioned keyword option, if present."
@@ -92,32 +83,20 @@
                                       'list))))
             unknown-keywords)))
 
-(define-condition mixed-keyword-error (defclass/std-error)
-  ((line :initarg line :reader line :type cons
-         :documentation "The original line where the error was thrown."))
-  (:report (lambda (error stream)
-             (format stream (text error) (line error)))))
-
 (defun check-for-repeated-keywords (line)
   "Verifies if keyword options were repeated. Mainly useful for avoiding things like (:A :AI) together, or (:R :W) instead of (:A)."
   (cond ((and (member :w line)
               (member :r line))
-         (error
-          'mixed-keyword-error
-          :text "Use :A (accessor) instead of :W (writer) and :R (reader): ~s"
-          :line line))
+         (error "Use :A (accessor) instead of :W (writer) and :R (reader) in: ~s"
+                line))
         ((and (member :w line)
               (member :a line))
-         (error
-          'mixed-keyword-error
-          :text ":W (writer) and :A (accessor) shouldn't be together: ~s."
-          :line line))
+         (error ":W (writer) and :A (accessor) shouldn't be together in: ~s."
+                line))
         ((and (member :r line)
               (member :a line))
-         (error
-          'mixed-keyword-error
-          :text ":R (reader) and :A (accessor) shouldn't be together: ~s."
-          :line line))))
+         (error ":R (reader) and :A (accessor) shouldn't be together in: ~s."
+                line))))
 
 (defun replace-keywords (line prefix unknown-keywords-and-values)
   "Receives a list of slots with keywords and returns a list of lists. Each sublist is a single slot, with all the options appended at the end."
