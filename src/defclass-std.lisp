@@ -53,8 +53,7 @@
   "Finds pairs of unknown-keywords (and optional values) in LINE."
   (if line
       (let ((slot (car line)))
-        (cond ((equal line (extract-slot-names line)) nil)
-              ((or (not (keywordp slot))
+        (cond ((or (not (keywordp slot))
                    (member slot *standalone-keywords*))
                (extract-unkown-keywords (cdr line)))
               ((member slot *paired-keywords*)
