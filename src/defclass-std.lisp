@@ -126,18 +126,16 @@
 (defmacro defclass/std (name direct-superclasses direct-slots &rest options)
   "Shortcut macro to the DEFCLASS macro. See README for syntax and usage."
   `(defclass ,name ,direct-superclasses
-     ,@(mapcar
-        (lambda (line)
-          (let ((prefix (if (or (member :with-prefix line)
-                                (member :with line)
-                                *with-prefix*)
-                            (concatenate 'string (string name) "-")
-                            ""))
-                (split-kws-line (split-fusioned-keywords line)))
-            (check-for-repeated-keywords split-kws-line)
-            (replace-keywords split-kws-line
-                              prefix)))
-        direct-slots)
+     ,@(mapcar (lambda (line)
+                 (let ((prefix (if (or (member :with-prefix line)
+                                       (member :with line)
+                                       *with-prefix*)
+                                   (concatenate 'string (string name) "-")
+                                   ""))
+                       (split-kws-line (split-fusioned-keywords line)))
+                   (check-for-repeated-keywords split-kws-line)
+                   (replace-keywords split-kws-line prefix)))
+               direct-slots)
      ,@options))
 
 (defmacro class/std (name &body defaulted-slots)
