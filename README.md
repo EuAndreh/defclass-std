@@ -194,7 +194,7 @@ Examples
 
    Real life examples:
 
-   From [[https://github.com/AccelerationNet/cl-inflector/blob/master/langs.lisp][cl-inflector]]:
+   From [cl-inflector](https://github.com/AccelerationNet/cl-inflector/blob/master/langs.lisp][cl-inflector):
 ```lisp
 (defclass language ()
   ((name :accessor name :initarg :name :initform nil)
@@ -212,7 +212,7 @@ Examples
 
 (class/std language name plurals singulars uncountables irregulars)
 ```
-   From [[https://github.com/fukamachi/clack/blob/9804d0b57350032ebdcf8539bae376b5528ac1f6/src/core/handler.lisp][clack]]:
+   From [clack](https://github.com/fukamachi/clack/blob/9804d0b57350032ebdcf8539bae376b5528ac1f6/src/core/handler.lisp):
 ```lisp
 (defclass <handler> ()
      ((server-name :type keyword
@@ -226,7 +226,7 @@ Examples
   ((server-name :type keyword)
    (acceptor)))
 ```
-   From [[https://github.com/archimag/restas/blob/3e37f868141c785d2468fab342d57cca2e2a40dd/src/route.lisp][RESTAS]]:
+   From [RESTAS](https://github.com/archimag/restas/blob/3e37f868141c785d2468fab342d57cca2e2a40dd/src/route.lisp):
 ```lisp
 (defclass route (routes:route)
   ((symbol :initarg :symbol :reader route-symbol)
@@ -248,7 +248,7 @@ Examples
    (render-method :i :std #'identity)
    (header :ir)))
 ```
-   From [[http://common-lisp.net/project/defclass-star/configuration.lisp.html][defclass-star example]]:
+   From [defclass-star example](http://common-lisp.net/project/defclass-star/configuration.lisp.html):
 ```lisp
 (defclass configuration ()
   ((package-name      :type symbol  :initarg :package-name      :accessor package-name-of)
@@ -321,7 +321,7 @@ Examples
    (temp-directory :std (make-pathname :directory "/tmp"))
    (working-directory :std *default-pathname-defaults*)))
 ```
-   From [[https://github.com/jd/cl-hue/blob/master/cl-hue.lisp][cl-hue]]:
+   From [cl-hue](https://github.com/jd/cl-hue/blob/master/cl-hue.lisp):
 ```lisp
 (defclass light ()
   ((bridge :initarg :bridge :accessor light-bridge)
@@ -370,12 +370,12 @@ Examples
 Dependencies
 ------------
 
-This project depends only on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
+This project depends only on the [Anaphora](http://common-lisp.net/project/anaphora/) library. The test package uses the [prove](github.com/fukamachi/prove) test library.
 
 Installation
 ------------
 
-Now available on [[http://quicklisp.org][Quicklisp]]! Just one `(ql:quickload :defclass-std)` away!
+Now available on [Quicklisp](http://quicklisp.org)! Just one `(ql:quickload :defclass-std)` away!
 
 Bugs
 ----
@@ -394,13 +394,13 @@ To run all the defined tests, use:
 ; => T
 ```
 
-Tests are also ran with [[https://travis-ci.org/EuAndreh/defclass-std][Travis CI]] using [[https://github.com/luismbo/cl-travis][cl-travis]] and [[https://github.com/KeenS/CIM][CIM]]. Check it out!
+Tests are also ran with [Travis CI](https://travis-ci.org/EuAndreh/defclass-std) using [cl-travis](https://github.com/luismbo/cl-travis) and [CIM](https://github.com/KeenS/CIM). Check it out!
 
 Authors
 -------
 
   + André Miranda
-  + [[https://github.com/jorams][Joram Schrijver]]
+  + [Joram Schrijver](https://github.com/jorams)
 
 License
 -------
