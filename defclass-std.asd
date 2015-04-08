@@ -1,11 +1,11 @@
-(in-package cl-user)
-(defpackage defclass-std-asd
-  (:use cl asdf))
-(in-package defclass-std-asd)
-
 (defsystem defclass-std
   :version "0.1"
   :author "André Miranda"
+  :maintainer "André Miranda"
+  :mailto "<andremiramor@gmail.com>"
+  :homepage "https://github.com/EuAndreh/defclass-std"
+  :bug-tracker "https://github.com/EuAndreh/defclass-std/issues"
+  :source-control (:git "git@github.com:EuAndreh/defclass-std.git")
   :license "LLGPL"
   :depends-on (alexandria
                anaphora)

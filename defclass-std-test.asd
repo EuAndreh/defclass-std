@@ -6,6 +6,8 @@
 (defsystem defclass-std-test
   :author "André Miranda"
   :license "LLGPL"
+  :mailto "<andremiramor@gmail.com>"
+  :homepage "https://github.com/EuAndreh/fad-iter"
   :depends-on (defclass-std
                prove)
   :components ((:module "t"
