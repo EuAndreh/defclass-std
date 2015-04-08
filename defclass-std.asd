@@ -14,5 +14,5 @@
                 ((:file "defclass-std"))))
   :description "A shortcut macro to write DEFCLASS forms quickly."
   :long-description #.(uiop:read-file-string
-                       (uiop:subpathname *load-pathname* "README.org"))
+                       (uiop:subpathname *load-pathname* "README.md"))
   :in-order-to ((test-op (test-op defclass-std-test))))

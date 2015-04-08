@@ -1,24 +1,29 @@
-* defclass-std
-  [[https://travis-ci.org/EuAndreh/defclass-std][https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master]]
-  [[https://coveralls.io/r/EuAndreh/defclass-std][https://coveralls.io/repos/EuAndreh/defclass-std/badge.svg?branch=master]]
+defclass-std
+============
 
-  Most times, when sketching out a new class, I often commit lots of typos and forget to add an =:initform=.
+[![Build Status](https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master)](https://travis-ci.org/EuAndreh/defclass-std)
+[![Coverage Status](https://coveralls.io/repos/EuAndreh/defclass-std/badge.svg?branch=master)](https://coveralls.io/r/EuAndreh/defclass-std?branch=master)
 
-  Also, the throw away class designed in the beginning may thrive and stay the same. If only there was a way to overcome these problems... There is!
+Most times, when sketching out a new class, I often commit lots of typos and forget to add an `:initform`.
 
-  This simple macro atempts to give a very DRY and succint interface to the common =DEFCLASS= form. The goal is to offer most of the capabilities of a normal =DEFCLASS=, only in a more compact way.
+Also, the throw away class designed in the beginning may thrive and stay the same. If only there was a way to overcome these problems... There is!
 
-  Everything compiles down to =DEFCLASS=.
-** Usage
-#+BEGIN_SRC lisp
+This simple macro atempts to give a very DRY and succint interface to the common `DEFCLASS` form. The goal is to offer most of the capabilities of a normal `DEFCLASS`, only in a more compact way.
+
+Everything compiles down to `DEFCLASS`.
+
+Usage
+-----
+
+```lisp
 * (ql:quickload :defclass-std)
 ; => (:DEFCLASS-STD)
 * (import 'defclass-std:defclass/std)
 ; => T
-#+END_SRC
+```
 
-   A simple class defined with =DEFCLASS/STD= looks like this:
-#+BEGIN_SRC
+A simple class defined with `DEFCLASS/STD` looks like this:
+```lisp
 (defclass/std example ()
   ((slot1 slot2 slot3)))
 
@@ -28,14 +33,14 @@
   ((SLOT1 :ACCESSOR SLOT1 :INITARG :SLOT1 :INITFORM NIL)
    (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)
    (SLOT3 :ACCESSOR SLOT3 :INITARG :SLOT3 :INITFORM NIL)))
-#+END_SRC
+```
    As you can see, by default, the macro adds three options:
-   1. =:accessor= + the name of the slot
-   2. =:initarg= + the name of the slot
-   3. =:initform nil=
+   1. `:accessor` + the name of the slot
+   2. `:initarg` + the name of the slot
+   3. `:initform nil`
 
-   If you want to change the =:initform= value, you can use the =:std= option:
-#+BEGIN_SRC lisp
+   If you want to change the `:initform` value, you can use the `:std` option:
+```lisp
 (defclass std-test ()
   ((slot :std 1)))
 
@@ -43,12 +48,12 @@
 
 (DEFCLASS STD-TEST ()
   ((SLOT :ACCESSOR SLOT :INITARG :SLOT :INITFORM 1)))
-#+END_SRC
+```
 
-   If you want to omit the =:initform= option, you have two ways:
-   1. Use =:std :unbound= explicitly
-   2. Change the value of =*default-std*=. By default it is set to =T=, so, when the =:std= option is omitted, =:initform= is set to nil. When =*default-std*= is set to nil, =:initform= is omitted when =:std= is omitted.
-#+BEGIN_SRC lisp
+   If you want to omit the `:initform` option, you have two ways:
+   1. Use `:std :unbound` explicitly
+   2. Change the value of `*default-std*`. By default it is set to `T`, so, when the `:std` option is omitted, `:initform` is set to nil. When `*default-std*` is set to nil, `:initform` is omitted when `:std` is omitted.
+```lisp
 (defclass/std omit-std ()
   ((slot :std :unbound)))
 
@@ -62,14 +67,14 @@
 
 (DEFCLASS OMIT-STD ()
   ((SLOT :ACCESSOR SLOT :INITARG :SLOT)))
-#+END_SRC
+```
 
-   =:a=, =:i=, =:r= and =:w= are connected: when all of them are omitted, =:a= and =:i= are inserted by default.
+   `:a`, `:i`, `:r` and `:w` are connected: when all of them are omitted, `:a` and `:i` are inserted by default.
 
-   =:a= stands for =:accessor=, =:i= stands for =:initarg=, =:r= stands for =:reader= and =:w= stands for =:writer=.
+   `:a` stands for `:accessor`, `:i` stands for `:initarg`, `:r` stands for `:reader` and `:w` stands for `:writer`.
 
-   If any of those is present, the default (=:a= and =:i=) is omitted.
-#+BEGIN_SRC lisp
+   If any of those is present, the default (`:a` and `:i`) is omitted.
+```lisp
 (defclass/std airw ()
   ((slot1 slot2)
    (slot3 slot4 :r)
@@ -87,14 +92,14 @@
    (SLOT5 :WRITER SLOT5 :INITFORM NIL)
    (SLOT6 :ACCESSOR SLOT6 :INITFORM NIL)
    (SLOT7 :READER SLOT7 :INITARG :SLOT7 :INITFORM NIL)))
-#+END_SRC
-   Note that slot7 has an =:ri= option. That's just =:r= and =:i= together.
+```
+   Note that slot7 has an `:ri` option. That's just `:r` and `:i` together.
 
-   If you want to use =:r= and =:w= together, use =:a= instead, or you'll get an error. The same stands for =:a= + =:r= and =:a= + =:w=.
+   If you want to use `:r` and `:w` together, use `:a` instead, or you'll get an error. The same stands for `:a` + `:r` and `:a` + `:w`.
 
-   You can choose to add the class name as a prefix for the acessor/reader/writer function. Just put =:with= or =:with-prefix= option.
+   You can choose to add the class name as a prefix for the acessor/reader/writer function. Just put `:with` or `:with-prefix` option.
 
-#+BEGIN_SRC lisp
+```lisp
 (defclass/std example ()
   ((slot1 :with)
    (slot2)))
@@ -104,14 +109,14 @@
 (DEFCLASS WITH ()
   ((SLOT1 :ACCESSOR EXAMPLE-SLOT1 :INITARG :SLOT1 :INITFORM NIL)
    (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)))
-#+END_SRC
+```
 
-   To make a slot static (class-allocated), use =:@@= or =:static=.
+   To make a slot static (class-allocated), use `:@@` or `:static`.
 
-   To declare the type of a slot or to add documentation to a slot, use =:type= and =:doc=, respectively.
+   To declare the type of a slot or to add documentation to a slot, use `:type` and `:doc`, respectively.
 
-   For real quick, concise, dense and standard class definitions, use =CLASS/STD=:
-#+BEGIN_SRC lisp
+   For real quick, concise, dense and standard class definitions, use `CLASS/STD`:
+```lisp
 (class/std example slot1 slot2 slot3)
 
 ; which expands to:
@@ -125,10 +130,10 @@
   ((SLOT1 :ACCESSOR SLOT1 :INITARG :SLOT1 :INITFORM NIL)
    (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)
    (SLOT3 :ACCESSOR SLOT3 :INITARG :SLOT3 :INITFORM NIL)))
-#+END_SRC
+```
 
-   You can also add the prefix by default by changing the value of the =*with-prefix*= special variable (defaults to =nil=):
-#+BEGIN_SRC lisp
+   You can also add the prefix by default by changing the value of the `*with-prefix*` special variable (defaults to `nil`):
+```lisp
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (setf *with-prefix* t))
 (defclass/std pre ()
@@ -138,10 +143,10 @@
 
 (DEFCLASS PRE ()
   ((FIX :ACCESSOR PRE-FIX :INITARG :FIX)))
-#+END_SRC
+```
 
    Unknown keywords are left intact:
-#+BEGIN_SRC lisp
+```lisp
 (defclass/std unknown ()
   ((slot :unknown :keywords)))
 
@@ -160,9 +165,9 @@
 
 (DEFCLASS UNKNOWN ()
   ((SLOT :WRITER SLOT :INITARG :SLOT :INITFORM NIL :KEYWORDS :UNKNOWN)))
-#+END_SRC
+```
 ** Examples:
-#+BEGIN_SRC lisp
+```lisp
 (defclass/std computer (gadget)
   ((screen mouse keyboard :a :type string :with-prefix)
    (bluetooth touchpad :wi)
@@ -183,12 +188,12 @@
    (PLACE :READER COMPUTER-PLACE :INITFORM NIL :ALLOCATION :CLASS
           :DOCUMENTATION "Where it is")
    (OWNER :WRITER OWNER :INITFORM "Me" :ALLOCATION :CLASS)))
-#+END_SRC
+```
 
    Real life examples:
 
    From [[https://github.com/AccelerationNet/cl-inflector/blob/master/langs.lisp][cl-inflector]]:
-#+BEGIN_SRC lisp
+```lisp
 (defclass language ()
   ((name :accessor name :initarg :name :initform nil)
    (plurals :accessor plurals :initarg :plurals :initform nil)
@@ -204,9 +209,9 @@
 ; or, using CLASS/STD:
 
 (class/std language name plurals singulars uncountables irregulars)
-#+END_SRC
+```
    From [[https://github.com/fukamachi/clack/blob/9804d0b57350032ebdcf8539bae376b5528ac1f6/src/core/handler.lisp][clack]]:
-#+BEGIN_SRC lisp
+```lisp
 (defclass <handler> ()
      ((server-name :type keyword
                    :initarg :server-name
@@ -218,9 +223,9 @@
 (defclass/std language ()
   ((server-name :type keyword)
    (acceptor)))
-#+END_SRC
+```
    From [[https://github.com/archimag/restas/blob/3e37f868141c785d2468fab342d57cca2e2a40dd/src/route.lisp][RESTAS]]:
-#+BEGIN_SRC lisp
+```lisp
 (defclass route (routes:route)
   ((symbol :initarg :symbol :reader route-symbol)
    (module :initarg :module :initform nil :reader route-module)
@@ -240,9 +245,9 @@
            headers variables additional-variables :ri)
    (render-method :i :std #'identity)
    (header :ir)))
-#+END_SRC
+```
    From [[http://common-lisp.net/project/defclass-star/configuration.lisp.html][defclass-star example]]:
-#+BEGIN_SRC lisp
+```lisp
 (defclass configuration ()
   ((package-name      :type symbol  :initarg :package-name      :accessor package-name-of)
    (package-nicknames :initform '() :initarg :package-nicknames :accessor package-nicknames-of)
@@ -313,9 +318,9 @@
                               :type (or (function (string)) symbol))
    (temp-directory :std (make-pathname :directory "/tmp"))
    (working-directory :std *default-pathname-defaults*)))
-#+END_SRC
+```
    From [[https://github.com/jd/cl-hue/blob/master/cl-hue.lisp][cl-hue]]:
-#+BEGIN_SRC lisp
+```lisp
 (defclass light ()
   ((bridge :initarg :bridge :accessor light-bridge)
    (number :initarg :number :accessor light-number)
@@ -354,12 +359,12 @@
 (class/std light
   bridge number type name modelid uniqueid swversion pointsymbol on brightness
   hue saturation xy ct alert effect colormode reachable)
-#+END_SRC
+```
 
-   There's a shortcut to setup a basic printing behaviour of a class, using =printing-unreadably=:
-#+BEGIN_SRC lisp
+   There's a shortcut to setup a basic printing behaviour of a class, using `printing-unreadably`:
+```lisp
 (printing-unreadably (field2 field3) (class/std myclass field1 field2 field3))
-#+END_SRC
+```
 ** Dependencies
    This project depends only on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
 
@@ -373,11 +378,11 @@
    This library is tested under SBCL, CCL and CLISP Common Lisp implementations.
 
    To run all the defined tests, use:
-#+BEGIN_SRC lisp
+```lisp
   * (asdf:test-system :defclass-std)
   ; prints lots of stuff...
   ; => T
-#+END_SRC
+```
    Tests are also ran with [[https://travis-ci.org/EuAndreh/defclass-std][Travis CI]] using [[https://github.com/luismbo/cl-travis][cl-travis]] and [[https://github.com/KeenS/CIM][CIM]]. Check it out!
 
 ** Authors
@@ -388,3 +393,4 @@
 ** License
 
    Licensed under the LLGPL License.
+
