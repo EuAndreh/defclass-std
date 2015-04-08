@@ -399,7 +399,7 @@ Tests are also ran with [Travis CI](https://travis-ci.org/EuAndreh/defclass-std)
 Authors
 -------
 
-  + André Miranda
+  + [André Miranda](https://github.com/EuAndreh)
   + [Joram Schrijver](https://github.com/jorams)
 
 License
