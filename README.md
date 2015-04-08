@@ -166,7 +166,9 @@ A simple class defined with `DEFCLASS/STD` looks like this:
 (DEFCLASS UNKNOWN ()
   ((SLOT :WRITER SLOT :INITARG :SLOT :INITFORM NIL :KEYWORDS :UNKNOWN)))
 ```
-** Examples:
+Examples
+--------
+
 ```lisp
 (defclass/std computer (gadget)
   ((screen mouse keyboard :a :type string :with-prefix)
@@ -365,32 +367,43 @@ A simple class defined with `DEFCLASS/STD` looks like this:
 ```lisp
 (printing-unreadably (field2 field3) (class/std myclass field1 field2 field3))
 ```
-** Dependencies
-   This project depends only on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
+Dependencies
+------------
 
-** Installation
-   Now available on [[http://quicklisp.org][Quicklisp]]!
+This project depends only on the [[http://common-lisp.net/project/anaphora/][Anaphora]] library. The test package uses the [[github.com/fukamachi/prove][prove]] test library.
 
-** Bugs
-   If you find any bug or inconsistency in the code, or if you find it too hard to use, feel free to open an issue.
+Installation
+------------
 
-** Tests
-   This library is tested under SBCL, CCL and CLISP Common Lisp implementations.
+Now available on [[http://quicklisp.org][Quicklisp]]! Just one `(ql:quickload :defclass-std)` away!
 
-   To run all the defined tests, use:
+Bugs
+----
+
+If you find any bug or inconsistency in the code, or if you find it too hard to use, feel free to open an issue.
+
+Tests
+-----
+
+This library is tested under SBCL, CCL and CLISP Common Lisp implementations.
+
+To run all the defined tests, use:
 ```lisp
-  * (asdf:test-system :defclass-std)
-  ; prints lots of stuff...
-  ; => T
+* (asdf:test-system :defclass-std)
+; prints lots of stuff...
+; => T
 ```
-   Tests are also ran with [[https://travis-ci.org/EuAndreh/defclass-std][Travis CI]] using [[https://github.com/luismbo/cl-travis][cl-travis]] and [[https://github.com/KeenS/CIM][CIM]]. Check it out!
 
-** Authors
+Tests are also ran with [[https://travis-ci.org/EuAndreh/defclass-std][Travis CI]] using [[https://github.com/luismbo/cl-travis][cl-travis]] and [[https://github.com/KeenS/CIM][CIM]]. Check it out!
+
+Authors
+-------
 
   + André Miranda
   + [[https://github.com/jorams][Joram Schrijver]]
 
-** License
+License
+-------
 
-   Licensed under the LLGPL License.
+Licensed under the LLGPL License.
 
