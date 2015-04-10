@@ -1,5 +1,4 @@
-defclass-std
-============
+# defclass-std
 
 [![Build Status](https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master)](https://travis-ci.org/EuAndreh/defclass-std)
 [![Coverage Status](https://coveralls.io/repos/EuAndreh/defclass-std/badge.svg?branch=master)](https://coveralls.io/r/EuAndreh/defclass-std?branch=master)
@@ -12,8 +11,7 @@ This simple macro atempts to give a very DRY and succint interface to the common
 
 Everything compiles down to `DEFCLASS`.
 
-Usage
------
+## Usage
 
 ```lisp
 * (ql:quickload :defclass-std)
@@ -166,8 +164,7 @@ A simple class defined with `DEFCLASS/STD` looks like this:
 (DEFCLASS UNKNOWN ()
   ((SLOT :WRITER SLOT :INITARG :SLOT :INITFORM NIL :KEYWORDS :UNKNOWN)))
 ```
-Examples
---------
+## Examples
 
 ```lisp
 (defclass/std computer (gadget)
@@ -367,23 +364,19 @@ Examples
 ```lisp
 (printing-unreadably (field2 field3) (class/std myclass field1 field2 field3))
 ```
-Dependencies
-------------
+## Dependencies
 
 This project depends only on the [Anaphora](http://common-lisp.net/project/anaphora/) library. The test package uses the [prove](github.com/fukamachi/prove) test library.
 
-Installation
-------------
+## Installation
 
 Now available on [Quicklisp](http://quicklisp.org)! Just one `(ql:quickload :defclass-std)` away!
 
-Bugs
-----
+## Bugs
 
 If you find any bug or inconsistency in the code, or if you find it too hard to use, feel free to open an issue.
 
-Tests
------
+## Tests
 
 This library is tested under SBCL, CCL and CLISP Common Lisp implementations.
 
@@ -396,18 +389,14 @@ To run all the defined tests, use:
 
 Tests are also ran with [Travis CI](https://travis-ci.org/EuAndreh/defclass-std) using [cl-travis](https://github.com/luismbo/cl-travis) and [CIM](https://github.com/KeenS/CIM). Check it out!
 
-Authors
--------
+## Authors
 
   + [André Miranda](https://github.com/EuAndreh)
   + [Joram Schrijver](https://github.com/jorams)
 
-License
--------
+## License
 
-Licensed under the LLGPL License.
-
-
+Licensed under the [LLGPL](https://tldrlegal.com/license/lisp-lesser-general-public-license#fulltext) License.
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/EuAndreh/defclass-std/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
