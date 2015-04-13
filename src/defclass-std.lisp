@@ -154,7 +154,7 @@
                                         :type ,type
                                         :identity ,identity)
                 (format ,g!stream
-                        ,(format nil "~{~a: ~~s~^,~^ ~}" fields-list)
+                        ,(format nil "~{~a : ~~s~^,~^ ~}" fields-list)
                         ,@(mapcar (lambda (a1)
                                     `(,a1 ,name))
                                   fields-list)))))))
