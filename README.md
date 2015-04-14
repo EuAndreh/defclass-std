@@ -1,5 +1,4 @@
 # defclass-std
-
 [![Build Status](https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master)](https://travis-ci.org/EuAndreh/defclass-std)
 [![Coverage Status](https://coveralls.io/repos/EuAndreh/defclass-std/badge.svg?branch=master)](https://coveralls.io/r/EuAndreh/defclass-std?branch=master)
 
@@ -12,7 +11,6 @@ This simple macro atempts to give a very DRY and succint interface to the common
 Everything compiles down to `DEFCLASS`.
 
 ## Usage
-
 ```lisp
 * (ql:quickload :defclass-std)
 ; => (:DEFCLASS-STD)
