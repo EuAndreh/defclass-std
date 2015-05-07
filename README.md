@@ -384,7 +384,7 @@ Just one `(ql:quickload :defclass-std)` away!
 If you find any bug or inconsistency in the code, or if you find it too hard to use, please, feel free to open an issue.
 
 ## Tests
-This library is tested under SBCL, CCL and CLISP Common Lisp implementations.
+This library is tested under SBCL, CCL and ABCL Common Lisp implementations.
 
 To run all the defined tests, use:
 ```lisp
