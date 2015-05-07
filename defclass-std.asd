@@ -1,8 +1,8 @@
 (defsystem defclass-std
-  :version "0.1"
+  :version "0.1.1"
   :author "André Miranda"
   :maintainer "André Miranda"
-  :mailto "<andremiramor@gmail.com>"
+  :mailto "andremiramor@gmail.com"
   :homepage "https://github.com/EuAndreh/defclass-std"
   :bug-tracker "https://github.com/EuAndreh/defclass-std/issues"
   :source-control (:git "git@github.com:EuAndreh/defclass-std.git")
