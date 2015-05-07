@@ -1,4 +1,4 @@
-# defclass-std
+# defclass-std - Standard class writing macro
 [![Build Status](https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master)](https://travis-ci.org/EuAndreh/defclass-std)
 [![Coverage Status](https://coveralls.io/repos/EuAndreh/defclass-std/badge.svg?branch=master)](https://coveralls.io/r/EuAndreh/defclass-std?branch=master)
 
@@ -361,27 +361,35 @@ A simple class defined with `DEFCLASS/STD` looks like this:
    There's a shortcut to setup a basic printing behaviour of a class, using `printing-unreadably`:
 ```lisp
 (printing-unreadably (field2 field3) (class/std myclass field1 field2 field3))
-```
-## Dependencies
 
-This project depends only on the [Anaphora](http://common-lisp.net/project/anaphora/) library. The test package uses the [prove](github.com/fukamachi/prove) test library.
+; which expands to:
+
+(PROGN
+  (CLASS/STD MYCLASS FIELD1 FIELD2 FIELD3)
+  (DEFMETHOD PRINT-OBJECT ((MYCLASS MYCLASS) #:STREAM1722)
+    (PRINT-UNREADABLE-OBJECT (MYCLASS #:STREAM1722 :TYPE T :IDENTITY T)
+      (FORMAT #:STREAM1722 "FIELD2: ~s, FIELD3: ~s"
+              (FIELD2 MYCLASS) (FIELD3 MYCLASS)))))
+```
+
+## Dependencies
+This project depends only on [Anaphora](http://common-lisp.net/project/anaphora/) and [Alexandria](https://common-lisp.net/project/alexandria/) libraries. The test package uses the [prove](github.com/fukamachi/prove) test library.
 
 ## Installation
+Available on [Quicklisp](http://quicklisp.org)!
 
-Now available on [Quicklisp](http://quicklisp.org)! Just one `(ql:quickload :defclass-std)` away!
+Just one `(ql:quickload :defclass-std)` away!
 
 ## Bugs
-
-If you find any bug or inconsistency in the code, or if you find it too hard to use, feel free to open an issue.
+If you find any bug or inconsistency in the code, or if you find it too hard to use, please, feel free to open an issue.
 
 ## Tests
-
 This library is tested under SBCL, CCL and CLISP Common Lisp implementations.
 
 To run all the defined tests, use:
 ```lisp
 * (asdf:test-system :defclass-std)
-; prints lots of stuff...
+; prints lots of (colorful) stuff...
 ; => T
 ```
 
@@ -394,7 +402,7 @@ Tests are also ran with [Travis CI](https://travis-ci.org/EuAndreh/defclass-std)
 
 ## License
 
-Licensed under the [LLGPL](https://tldrlegal.com/license/lisp-lesser-general-public-license#fulltext) License.
+[LLGPL](https://tldrlegal.com/license/lisp-lesser-general-public-license#fulltext).
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/EuAndreh/defclass-std/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
