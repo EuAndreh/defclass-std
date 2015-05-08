@@ -384,7 +384,7 @@ Just one `(ql:quickload :defclass-std)` away!
 If you find any bug or inconsistency in the code, or if you find it too hard to use, please, feel free to open an issue.
 
 ## Tests
-This library is tested under [SBCL](http://www.sbcl.org/), [CCL](http://ccl.clozure.com/) and [ABCL](https://common-lisp.net/project/armedbear/) Common Lisp implementations.
+This library is tested under [ABCL](https://common-lisp.net/project/armedbear/), [SBCL](http://www.sbcl.org/), [CCL](http://ccl.clozure.com/), [CLISP](http://www.clisp.org/) and [ECL](https://common-lisp.net/project/ecl/) Common Lisp implementations.
 
 To run all the defined tests, use:
 ```lisp
@@ -393,7 +393,7 @@ To run all the defined tests, use:
 ; => T
 ```
 
-Tests are also ran with [Travis CI](https://travis-ci.org/EuAndreh/defclass-std) using [cl-travis](https://github.com/luismbo/cl-travis) and [CIM](https://github.com/KeenS/CIM). Check it out!
+Tests are ran with [Travis CI](https://travis-ci.org/EuAndreh/defclass-std) using [cl-travis](https://github.com/luismbo/cl-travis) and [CIM](https://github.com/KeenS/CIM). Check it out!
 
 ## Authors
 + [André Miranda](https://github.com/EuAndreh)

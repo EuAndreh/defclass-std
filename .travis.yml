@@ -1,12 +1,20 @@
 language: common-lisp
-
+sudo: required
 env:
   matrix:
     - LISP=abcl
     - LISP=sbcl COVERALLS=true
     - LISP=ccl
-#    - LISP=clisp  wait for cl-coveralls dependencies to support it
-#    - LISP=ecl
+    - LISP=clisp
+    - LISP=cmucl
+    - LISP=ecl
+
+matrix:
+  allow_failures:
+    - env: LISP=abcl  # JVM build goes wrong too many times
+    - env: LISP=clisp # wait for cl-coveralls dependencies to support it
+    - env: LISP=cmucl # wait for CIM to support it
+    - env: LISP=ecl   # wait for cl-coveralls dependencies to support it
 
 install:
   - curl https://raw.githubusercontent.com/luismbo/cl-travis/master/install.sh | sh;
