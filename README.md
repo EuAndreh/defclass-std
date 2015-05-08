@@ -396,13 +396,8 @@ To run all the defined tests, use:
 Tests are also ran with [Travis CI](https://travis-ci.org/EuAndreh/defclass-std) using [cl-travis](https://github.com/luismbo/cl-travis) and [CIM](https://github.com/KeenS/CIM). Check it out!
 
 ## Authors
-
-  + [André Miranda](https://github.com/EuAndreh)
-  + [Joram Schrijver](https://github.com/jorams)
++ [André Miranda](https://github.com/EuAndreh)
++ [Joram Schrijver](https://github.com/jorams)
 
 ## License
-
 [LLGPL](https://tldrlegal.com/license/lisp-lesser-general-public-license#fulltext).
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/EuAndreh/defclass-std/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
