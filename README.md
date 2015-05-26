@@ -376,9 +376,10 @@ A simple class defined with `DEFCLASS/STD` looks like this:
 This project depends only on [Anaphora](http://common-lisp.net/project/anaphora/) and [Alexandria](https://common-lisp.net/project/alexandria/) libraries. The test package uses the [prove](github.com/fukamachi/prove) test library.
 
 ## Installation
-Available on [Quicklisp](http://quicklisp.org)!
-
-Just one `(ql:quickload :defclass-std)` away!
+Available on [Quicklisp](http://quicklisp.org):
+```
+(ql:quickload :defclass-std)
+```
 
 ## Bugs
 If you find any bug or inconsistency in the code, or if you find it too hard to use, please, feel free to open an issue.
