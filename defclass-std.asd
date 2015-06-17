@@ -1,4 +1,5 @@
 (defsystem defclass-std
+  :name "defclass-std"
   :version "0.1.1"
   :author "André Miranda"
   :maintainer "André Miranda"
@@ -10,8 +11,7 @@
   :depends-on (alexandria
                anaphora)
   :components ((:module "src"
-                        :components
-                        ((:file "defclass-std")))
+                        :components ((:file "defclass-std")))
                (:static-file "README.md"))
   :description "A shortcut macro to write DEFCLASS forms quickly."
   :long-description #.(uiop:read-file-string

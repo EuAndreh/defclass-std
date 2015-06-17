@@ -1,5 +1,6 @@
 # defclass-std - Standard class writing macro
 [![Build Status](https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master)](https://travis-ci.org/EuAndreh/defclass-std)
+[![Circle CI](https://circleci.com/gh/EuAndreh/defclass-std.svg?style=svg)](https://circleci.com/gh/EuAndreh/defclass-std)
 [![Coverage Status](https://coveralls.io/repos/EuAndreh/defclass-std/badge.svg?branch=master)](https://coveralls.io/r/EuAndreh/defclass-std?branch=master)
 
 Most times, when sketching out a new class, I often commit lots of typos and forget to add an `:initform`.
@@ -393,8 +394,7 @@ To run all the defined tests, use:
 ; prints lots of (colorful) stuff...
 ; => T
 ```
-
-Tests are ran with [Travis CI](https://travis-ci.org/EuAndreh/defclass-std) using [cl-travis](https://github.com/luismbo/cl-travis) and [CIM](https://github.com/KeenS/CIM). Check it out!
+Tests are ran with [Travis CI](https://travis-ci.org/EuAndreh/defclass-std) and [Circle CI](https://circleci.com/gh/EuAndreh/defclass-std) using [cl-travis](https://github.com/luismbo/cl-travis), [CIM](https://github.com/KeenS/CIM), [cl-coveralls](https://github.com/fukamachi/cl-coveralls) and [Roswell](https://github.com/snmsts/roswell). Check it out!
 
 ## Authors
 + [André Miranda](https://github.com/EuAndreh)

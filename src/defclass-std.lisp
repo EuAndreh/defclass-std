@@ -139,7 +139,6 @@
               (check-for-repeated-keywords split-kws-line)
               (replace-keywords split-kws-line prefix)))
           direct-slots)))
-    ;; un-nest the lists
     (reduce #'append processed)))
 
 (defmacro class/std (name &body defaulted-slots)

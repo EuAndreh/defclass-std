@@ -12,8 +12,7 @@
   :depends-on (defclass-std
                   prove)
   :components ((:module "t"
-                :components
-                ((:test-file "defclass-std"))))
+                        :components ((:test-file "defclass-std"))))
   :defsystem-depends-on (:prove-asdf)
   :perform (test-op :after (op c)
                     (funcall (intern "RUN-TEST-SYSTEM" :prove-asdf) c)
