@@ -129,6 +129,7 @@
      ,@options))
 
 (defun process-slots (direct-slots classname)
+  "Returns the expanded list of DIRECT-SLOTS."
   (let ((processed (mapcar (lambda (line)
             (let ((prefix (if (or (member :with-prefix line)
                                   (member :with line)
