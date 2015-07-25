@@ -9,10 +9,6 @@ dependencies:
            ros config set default.lisp ccl-bin ;;
       esac
     - ros run -- --version
-  post:
-    - if [ ! -d ~/lisp/archive ]; then
-        git clone https://github.com/froydnj/archive ~/lisp/archive;
-      fi
 
 test:
   override:
