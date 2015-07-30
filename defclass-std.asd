@@ -15,5 +15,5 @@
                (:static-file "README.md"))
   :description "A shortcut macro to write DEFCLASS forms quickly."
   :long-description #.(uiop:read-file-string
-                       (asdf:system-relative-pathname :defclass-std "README.md"))
+                       (uiop:subpathname *load-truename* "README.md"))
   :in-order-to ((test-op (test-op defclass-std-test))))
