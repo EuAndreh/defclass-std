@@ -1,5 +1,5 @@
 # defclass-std - Standard class writing macro
-[![Quicklisp dist](http://quickdocs.org/badge/defclass-std.svg)](http://quickdocs.org/defclass-std/)
+[![Quicklisp](http://quickdocs.org/badge/defclass-std.svg)](http://quickdocs.org/defclass-std/)
 [![Build Status](https://travis-ci.org/EuAndreh/defclass-std.svg?branch=master)](https://travis-ci.org/EuAndreh/defclass-std)
 [![Circle CI](https://circleci.com/gh/EuAndreh/defclass-std.svg?style=svg)](https://circleci.com/gh/EuAndreh/defclass-std)
 [![Coverage Status](https://coveralls.io/repos/EuAndreh/defclass-std/badge.svg?branch=master)](https://coveralls.io/r/EuAndreh/defclass-std?branch=master)
