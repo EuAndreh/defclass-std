@@ -104,7 +104,7 @@ A simple class defined with `DEFCLASS/STD` looks like this:
 
 ; which expands to:
 
-(DEFCLASS WITH ()
+(DEFCLASS EXAMPLE ()
   ((SLOT1 :ACCESSOR EXAMPLE-SLOT1 :INITARG :SLOT1 :INITFORM NIL)
    (SLOT2 :ACCESSOR SLOT2 :INITARG :SLOT2 :INITFORM NIL)))
 ```
