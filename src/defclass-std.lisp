@@ -93,42 +93,45 @@
          (error ":R (reader) and :A (accessor) shouldn't be together in: ~s."
                 line))))
 
-(defun replace-keywords (line prefix)
+(defun replace-keywords (env line prefix)
   "Receives a list of slots with keywords and returns a list of lists. Each sublist is a single slot, with all the options appended at the end."
-  (mapcar (lambda (slot)
-            (concatenate 'list
-                         (list slot)
-                         (if (member :a line)
-                             (list :accessor (symbolicate prefix slot)))
-                         (if (member :r line)
-                             (list :reader (symbolicate prefix slot)))
-                         (if (member :w line)
-                             (list :writer (symbolicate prefix slot)))
-                         (if (member :i line)
-                             (list :initarg (make-keyword slot)))
-                         (aif (member :std line)
-                              (if (eq (cadr it) :unbound)
-                                  nil
-                                  (list :initform (cadr it)))
-                              (if *default-std*
-                                  (list :initform nil)))
-                         (if (or (member :@@ line)
-                                 (member :static line))
-                             (list :allocation :class))
-                         (aif (member :doc line)
-                              (list :documentation (cadr it)))
-                         (aif (member :type line)
-                              (list :type  (cadr it)))
-                         (extract-unkown-keywords line)))
-          (extract-slot-names line)))
+  (let ((type (aif (member :type line) (cadr it) t)))
+    (mapcar (lambda (slot)
+              (concatenate 'list
+                           (list slot)
+                           (if (member :a line)
+                               (list :accessor (symbolicate prefix slot)))
+                           (if (member :r line)
+                               (list :reader (symbolicate prefix slot)))
+                           (if (member :w line)
+                               (list :writer (symbolicate prefix slot)))
+                           (if (member :i line)
+                               (list :initarg (make-keyword slot)))
+                           (aif (member :std line)
+                                (if (eq (cadr it) :unbound)
+                                    nil
+                                    (list :initform (cadr it)))
+                                (if *default-std*
+                                    (if (subtypep 'null type env)
+                                        (list :initform nil))))
+                           (if (or (member :@@ line)
+                                   (member :static line))
+                               (list :allocation :class))
+                           (aif (member :doc line)
+                                (list :documentation (cadr it)))
+                           (aif (member :type line)
+                                (list :type  (cadr it)))
+                           (extract-unkown-keywords line)))
+            (extract-slot-names line))))
 
-(defmacro defclass/std (name direct-superclasses direct-slots &rest options)
+(defmacro defclass/std (name direct-superclasses direct-slots &rest options
+                        &environment env)
   "Shortcut macro to the DEFCLASS macro. See README for syntax and usage."
   `(defclass ,name ,direct-superclasses
-     ,(process-slots direct-slots name)
+     ,(process-slots env direct-slots name)
      ,@options))
 
-(defun process-slots (direct-slots classname)
+(defun process-slots (env direct-slots classname)
   "Returns the expanded list of DIRECT-SLOTS."
   (let ((processed (mapcar (lambda (line)
             (let ((prefix (if (or (member :with-prefix line)
@@ -138,7 +141,7 @@
                               ""))
                   (split-kws-line (split-fusioned-keywords line)))
               (check-for-repeated-keywords split-kws-line)
-              (replace-keywords split-kws-line prefix)))
+              (replace-keywords env split-kws-line prefix)))
           direct-slots)))
     (reduce #'append processed)))
 
